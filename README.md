@@ -6,15 +6,17 @@ GraphQL server implementation in Javascript.
 
 ## Features
 
-- Basic module-based graphQL server
-- Automatic merging of schemas
-- Logger middlewares
-- Authentication utility functions
-- Customisable environments through .env configuration
-- Automated code formatting on commit
-- Built in linters for styling
-- Helper scripts for easier development
-- Readily deployable to IBM Cloud Foundry
+| Feature                                              | Supported |
+| :--------------------------------------------------- | :-------- |
+| Basic module-based graphQL server                    | Yes       |
+| Automatic merging of schemas                         | Yes       |
+| Logger middlewares                                   | Yes       |
+| Authentication utility functions                     | Yes       |
+| Customisable environments through .env configuration | Yes       |
+| Automated code formatting on commit                  | Yes       |
+| Built in linters for styling                         | Yes       |
+| Readily deployable to IBM Cloud Foundry              | Yes       |
+| Helper scripts for easier development                | No        |
 
 ## Getting started
 
