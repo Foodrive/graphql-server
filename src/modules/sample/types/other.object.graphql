@@ -1,0 +1,8 @@
+type OtherObject {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  otherObject: OtherObject!
+}

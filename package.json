@@ -1,0 +1,53 @@
+{
+  "name": "apollo-server-basic",
+  "version": "1.0.0",
+  "description": "Basic GraphQL server",
+  "main": "./bin/www",
+  "engines": {
+    "node": "^16.3.0"
+  },
+  "scripts": {
+    "start": "node bin/www",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/rabestudios/internal/apollo-server-basic.git"
+  },
+  "keywords": [
+    "Apollo",
+    "GraphQL",
+    "Backend"
+  ],
+  "author": "Chris Rabe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/rabestudios/internal/apollo-server-basic/issues"
+  },
+  "homepage": "https://gitlab.com/rabestudios/internal/apollo-server-basic#readme",
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.1"
+  },
+  "dependencies": {
+    "@graphql-tools/load-files": "^6.3.2",
+    "@graphql-tools/merge": "^6.2.14",
+    "@graphql-tools/schema": "^7.1.5",
+    "apollo-log": "^1.0.1",
+    "apollo-server": "^2.25.1",
+    "bcryptjs": "^2.4.3",
+    "bunyan": "^1.8.15",
+    "dotenv": "^10.0.0",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}
