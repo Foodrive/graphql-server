@@ -1,18 +1,15 @@
-function someObject(parent, args, context) {
-  return {
+const Query = {
+  someObject: (parent, args, context) => ({
     id: "some-object",
     name: "Some Object",
-  };
-}
-
-const Query = {
-  someObject,
+  }),
 };
 
 const SomeObject = {
   id: (parent) => parent.id,
   name: (parent) => parent.name,
-  description: (parent) => parent.description,
+  description: (parent) =>
+    `Description of object with id: ${parent.id}; name: ${parent.name}`,
 };
 
 module.exports = {

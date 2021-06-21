@@ -1,12 +1,8 @@
-function otherObject(parent, args, context) {
-  return {
+const Query = {
+  otherObject: (parent, args, context) => ({
     id: "other-object",
     name: "Other Object",
-  };
-}
-
-const Query = {
-  otherObject,
+  }),
 };
 
 const OtherObject = {
