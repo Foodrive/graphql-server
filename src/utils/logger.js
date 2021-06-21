@@ -1,17 +1,10 @@
 const bunyan = require("bunyan");
 
-module.exports = (loggerName) => {
-  return bunyan.createLogger({
-    name: loggerName,
-    streams: [
-      {
-        level: "info",
-        stream: process.stdout,
-      },
-      {
-        level: "error",
-        stream: process.stdout,
-      },
-    ],
+module.exports = ({ name, streams, serializers, level, ...rest }) =>
+  bunyan.createLogger({
+    name,
+    streams,
+    serializers,
+    level: process.env.LOG_LEVEL || level,
+    rest,
   });
-};

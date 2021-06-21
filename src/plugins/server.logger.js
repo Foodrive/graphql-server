@@ -1,12 +1,14 @@
-const logger = require("../utils/logger")("server-logger");
+const logger = require("../utils/logger")({
+  name: "server-logger",
+});
 
 const ServerLogger = {
   async serverWillStart() {
-    logger.info("Server will starting...");
+    logger.info("Server is starting...");
   },
 
   async serverWillStop() {
-    logger.info("Server will stopping...");
+    logger.info("Server is stopping...");
   },
 };
 
