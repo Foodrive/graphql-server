@@ -4,7 +4,7 @@ import { defaultLoggingLevel } from "../config";
 const createLogger = ({ name, level, ...rest }) =>
   bunyan.createLogger({
     name,
-    level: defaultLoggingLevel ?? level,
+    level: level ?? defaultLoggingLevel,
     ...rest,
   });
 
