@@ -1,6 +1,6 @@
 import createLogger from "../utils/logger";
 
-const logger = createLogger({ name: "server-logger", level: "debug" });
+const logger = createLogger({ name: "server-logger" });
 
 const ServerLogger = {
   async serverWillStart() {
