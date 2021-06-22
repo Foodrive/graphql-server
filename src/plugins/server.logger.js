@@ -1,6 +1,6 @@
-const logger = require("../utils/logger")({
-  name: "server-logger",
-});
+import createLogger from "../utils/logger";
+
+const logger = createLogger({ name: "server-logger", level: "debug" });
 
 const ServerLogger = {
   async serverWillStart() {
@@ -12,4 +12,4 @@ const ServerLogger = {
   },
 };
 
-module.exports = ServerLogger;
+export default ServerLogger;

@@ -1,4 +1,0 @@
-#!/usr/bin/node
-require("dotenv").config();
-const server = require("../src");
-server.listen().then(({ url }) => console.log(`Server is running on ${url}`));

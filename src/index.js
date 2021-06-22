@@ -1,11 +1,9 @@
-const { ApolloServer } = require("apollo-server");
-
-const modules = require("./modules");
-const plugins = require("./plugins");
+import { ApolloServer } from "apollo-server";
+import modules from "./modules";
+import plugins from "./plugins";
+import database from "./database";
 
 // Anything shared between resolvers are put into context
-const database = require("./database");
-
 const server = new ApolloServer({
   plugins,
   schema: modules,
@@ -15,4 +13,4 @@ const server = new ApolloServer({
   }),
 });
 
-module.exports = server;
+export default server;

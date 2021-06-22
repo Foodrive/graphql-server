@@ -10,7 +10,7 @@ const OtherObject = {
   name: (parent) => parent.name,
 };
 
-module.exports = {
+export default {
   Query,
   OtherObject,
 };

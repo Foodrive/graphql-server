@@ -8,6 +8,8 @@ npm-debug.log
 .env
 *.dev
 .DS_Store
+dist
+build
 
 # Docker
 Dockerfile

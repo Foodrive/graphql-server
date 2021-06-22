@@ -12,7 +12,7 @@ const SomeObject = {
     `Description of object with id: ${parent.id}; name: ${parent.name}`,
 };
 
-module.exports = {
+export default {
   Query,
   SomeObject,
 };
