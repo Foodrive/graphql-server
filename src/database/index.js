@@ -1,13 +1,21 @@
 // Note: This is just a placeholder database
 // Replace with actual database here
 
-class PureJSDatabase {
-  constructor() {
+class CloudantDatabase {
+  constructor(db) {
     this.items = [];
+    this.db = db;
   }
 
-  getAll() {
-    return this.items;
+  /**
+   * @param {string} partitionKey - fetch data from partition
+   *
+   * @return {array} array of results from the partition
+   */
+  getAll(partitionKey) {
+    return this.db
+      .partitionedList(partitionKey, { include_docs: true })
+      .then((result) => result.rows);
   }
 
   get(index) {
@@ -31,4 +39,4 @@ class PureJSDatabase {
   }
 }
 
-export default new PureJSDatabase();
+export default CloudantDatabase;
