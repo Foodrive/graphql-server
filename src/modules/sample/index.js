@@ -1,8 +1,8 @@
-const { makeExecutableSchema } = require("apollo-server");
-const typeDefs = require("./types");
-const resolvers = require("./resolvers");
+import { makeExecutableSchema } from "apollo-server";
+import typeDefs from "./types";
+import resolvers from "./resolvers";
 
-module.exports = makeExecutableSchema({
+export default makeExecutableSchema({
   typeDefs,
   resolvers,
 });

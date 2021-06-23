@@ -1,10 +1,11 @@
-const bunyan = require("bunyan");
+import bunyan from "bunyan";
+import { defaultLoggingLevel } from "../config";
 
-module.exports = ({ name, streams, serializers, level, ...rest }) =>
+const createLogger = ({ name, level, ...rest }) =>
   bunyan.createLogger({
     name,
-    streams,
-    serializers,
-    level: process.env.LOG_LEVEL || level,
-    rest,
+    level: level ?? defaultLoggingLevel,
+    ...rest,
   });
+
+export default createLogger;

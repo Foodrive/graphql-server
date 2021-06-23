@@ -31,4 +31,4 @@ class PureJSDatabase {
   }
 }
 
-module.exports = new PureJSDatabase();
+export default new PureJSDatabase();

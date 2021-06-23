@@ -1,4 +1,4 @@
-const { ApolloLogPlugin } = require("apollo-log");
+import { ApolloLogPlugin } from "apollo-log";
 
 const options = {
   events: {
@@ -9,4 +9,4 @@ const options = {
   timestamp: true,
 };
 
-module.exports = ApolloLogPlugin(options);
+export default ApolloLogPlugin(options);
