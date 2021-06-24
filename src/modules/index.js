@@ -1,11 +1,11 @@
 import { mergeSchemas } from "@graphql-tools/merge";
-import sampleSchema from "./sample";
+import sharedSchema from "./shared";
 import eventSchema from "./event";
 
 // merge all of them into one
 export default mergeSchemas({
   schemas: [
-    sampleSchema,
+    sharedSchema,
     eventSchema,
     // add more here
   ],
