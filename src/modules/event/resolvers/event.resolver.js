@@ -10,7 +10,7 @@ const creator = (parent) =>
   // TODO query DB for user
   parent.creator;
 
-const eventResolvers = {
+const Event = {
   id: (parent) => parent.id,
   type: (parent) => parent.type,
   creator,
@@ -33,7 +33,7 @@ const totalServings = (parent) =>
   0;
 
 const FoodEvent = {
-  ...eventResolvers,
+  ...Event,
   food,
   attendees,
   totalServings,
@@ -42,11 +42,12 @@ const FoodEvent = {
 // Request event resolvers
 
 const RequestEvent = {
-  ...eventResolvers,
+  ...Event,
   allergies: (parent) => parent.allergies,
 };
 
 export default {
+  Event,
   FoodEvent,
   RequestEvent,
 };
