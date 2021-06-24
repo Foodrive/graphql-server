@@ -3,7 +3,7 @@ interface Event {
   type: EventType!
   creator: String!
   datetime: String!
-  location: String!
+  location: Location!
 }
 
 type FoodEvent implements Event {
@@ -12,7 +12,7 @@ type FoodEvent implements Event {
   type: EventType!
   creator: String!
   datetime: String!
-  location: String!
+  location: Location!
   description: String!
   food: [String]!
   attendees: [String]
@@ -24,7 +24,7 @@ type RequestEvent implements Event {
   type: EventType!
   creator: String!
   datetime: String!
-  location: String!
+  location: Location!
   allergies: [String]
 }
 
