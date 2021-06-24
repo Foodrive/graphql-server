@@ -1,0 +1,85 @@
+interface Event {
+  id: ID!
+  type: EventType!
+  creator: String!
+  datetime: String!
+  location: String!
+}
+
+type FoodEvent implements Event {
+  id: ID!
+  name: String!
+  type: EventType!
+  creator: String!
+  datetime: String!
+  location: String!
+  description: String!
+  food: [String]!
+  attendees: [String]
+  totalServings: Int
+}
+
+type RequestEvent implements Event {
+  id: ID!
+  type: EventType!
+  creator: String!
+  datetime: String!
+  location: String!
+  allergies: [String]
+}
+
+enum EventType {
+  GIVEAWAY
+  FOODDRIVE
+  REQUEST
+}
+
+type Query {
+  getAllFoodEvents: [FoodEvent]!
+  getAllRequestEvents: [RequestEvent]!
+  getFoodEvent(id: ID!): FoodEvent!
+  getRequestEvent(id: ID!): RequestEvent!
+}
+
+type Mutation {
+  createRequestEvent(
+    creator: String!
+    location: String!
+    allergies: [String]
+  ): RequestEvent
+
+  createFoodEvent(
+    name: String!
+    type: EventType!
+    creator: String!
+    datetime: String!
+    location: String!
+    description: String!
+    food: [String]!
+  ): FoodEvent
+
+  updateRequestEvent(
+    id: ID!
+    location: String
+    allergies: [String]
+  ): RequestEvent
+
+  updateFoodEvent(
+    id: ID!
+    name: String
+    creator: String
+    datetime: String
+    location: String
+    description: String
+    food: [String]
+  ): FoodEvent
+
+  deleteEvent(id: ID!): Event
+}
+
+type Subscription {
+  newFoodEvent: FoodEvent
+  newRequestEvent: RequestEvent
+  foodEventUpdated: FoodEvent
+  requestEventUpdated: RequestEvent
+}
