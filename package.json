@@ -11,7 +11,7 @@
     "transpile": "babel src -d dist --copy-files",
     "build": "npm run clean && npm run transpile",
     "serve": "npm run build && NODE_ENV=production node dist/bin/www.js",
-    "start": "NODE_ENV=development nodemon --exec babel-node src/bin/www.js",
+    "start": "rm -rf ./node_modules/.cache/babel-loader && NODE_ENV=development nodemon --exec babel-node src/bin/www.js",
     "prepare": "husky install"
   },
   "repository": {
@@ -51,6 +51,7 @@
     "@graphql-tools/schema": "^7.1.5",
     "apollo-log": "^1.0.1",
     "apollo-server": "^2.25.1",
+    "babel-plugin-import-graphql": "^2.8.1",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.15",
     "dotenv": "^10.0.0",
