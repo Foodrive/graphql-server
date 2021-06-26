@@ -11,11 +11,17 @@ const creator = (parent) =>
   parent.creator;
 
 const Event = {
-  id: (parent) => parent.id,
-  type: (parent) => parent.type,
   creator,
-  datetime: (parent) => parent.datetime,
-  location: (parent) => parent.location,
+  __resolveType(event) {
+    switch (event.type) {
+      case EventType.giveaway:
+        return EventType.giveaway;
+      case EventType.foodDrive:
+        return EventType.foodDrive;
+      default:
+        return EventType.request;
+    }
+  },
 };
 
 // Food event resolvers
@@ -33,7 +39,6 @@ const totalServings = (parent) =>
   0;
 
 const FoodEvent = {
-  ...Event,
   food,
   attendees,
   totalServings,
@@ -42,7 +47,6 @@ const FoodEvent = {
 // Request event resolvers
 
 const RequestEvent = {
-  ...Event,
   allergies: (parent) => parent.allergies,
 };
 
