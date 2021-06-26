@@ -1,4 +1,4 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer, PubSub } from "apollo-server";
 import modules from "./modules";
 import plugins from "./plugins";
 import database from "./database";
@@ -10,6 +10,7 @@ const server = new ApolloServer({
   context: ({ req }) => ({
     ...req,
     database,
+    socket: PubSub,
   }),
 });
 
