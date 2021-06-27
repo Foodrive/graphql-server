@@ -63,6 +63,9 @@ class CloudantDatabase {
   }
 
   createPartition(partitionKey) {
+    // return this.db
+    //   .partitionedList(partitionKey, { include_docs: true })
+    //   .then((result) => result.rows);
     return {
       find() {
         // Implement
