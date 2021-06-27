@@ -46,6 +46,7 @@
     "prettier": "^2.3.1"
   },
   "dependencies": {
+    "@cloudant/cloudant": "^4.4.0",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^6.2.14",
     "@graphql-tools/schema": "^7.1.5",

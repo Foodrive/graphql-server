@@ -6,4 +6,9 @@ type SomeObject {
 
 type Query {
   someObject: SomeObject!
+  allSomeObjects: [SomeObject!]!
+}
+
+type Mutation {
+  createSomeObject(name: String!): SomeObject!
 }
