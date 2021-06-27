@@ -6,3 +6,9 @@ export const database = {
   username: process.env.cloudant_username || "",
   password: process.env.cloudant_password || "",
 };
+
+export const cloudant = {
+  dbName: process.env.CLOUDANT_DB || "",
+  cloudantId: process.env.CLOUDANT_ID || "",
+  apiToken: process.env.CLOUDANT_API_TOKEN || "",
+};
