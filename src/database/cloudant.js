@@ -66,17 +66,21 @@ class CloudantDatabase {
     // return this.db
     //   .partitionedList(partitionKey, { include_docs: true })
     //   .then((result) => result.rows);
-    return {
-      find() {
+    const partition = {
+      async find() {
         // Implement
       },
-      update() {
+      async update() {
         // implement
       },
-      delete() {
+      async delete() {
         // implement
       },
     };
+
+    // bind the partition to this object so we can access database
+    partition.bind(this);
+    return partition;
   }
 }
 
