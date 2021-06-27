@@ -15,10 +15,15 @@ const cloudantConfig = {
   },
 };
 
+const partitions = ["users", "events"];
+
 class CloudantDatabase {
   constructor() {
     (async () => {
       this.database = await this.connect();
+      partitions.forEach((key) => {
+        this[key] = this.createPartition(key);
+      });
     })();
   }
 
@@ -55,6 +60,20 @@ class CloudantDatabase {
         }
       });
     });
+  }
+
+  createPartition(partitionKey) {
+    return {
+      find() {
+        // Implement
+      },
+      update() {
+        // implement
+      },
+      delete() {
+        // implement
+      },
+    };
   }
 }
 
