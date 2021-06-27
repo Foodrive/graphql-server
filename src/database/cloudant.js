@@ -15,10 +15,8 @@ class CloudantDatabase {
 
   createPartition(partitionKey, database) {
     const partition = {
-       create() {
-         // impllement
-        // console.log(database);
-        // database.partitionedList('canidae', { include_docs: true });
+      async create() {
+         // implement
       },
       async update() {
         // implement
@@ -26,12 +24,13 @@ class CloudantDatabase {
       async delete() {
         // implement
       },
-      async find() {
-        // impelment
-        // return this.database
-        //   .partitionedList(partitionKey, { include_docs: true })
-        //   .then((result) => result.rows);
+      async getAll() {
+        const data = await database.partitionedList(partitionKey, { include_docs: true });
+        return data.rows;
       },
+      async getdById(id) {
+        // implement
+      }
     };
     // bind the partition to this object so we can access database
     Object.bind(partition, this);
