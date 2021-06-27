@@ -1,0 +1,6 @@
+type Subscription {
+  newFoodEvent: FoodEvent
+  newRequestEvent: RequestEvent
+  foodEventUpdated: FoodEvent
+  requestEventUpdated: RequestEvent
+}

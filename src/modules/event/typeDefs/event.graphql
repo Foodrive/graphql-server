@@ -1,0 +1,35 @@
+interface Event {
+  id: ID!
+  type: EventType!
+  creator: String!
+  datetime: String!
+  location: Location!
+}
+
+type FoodEvent implements Event {
+  id: ID!
+  name: String!
+  type: EventType!
+  creator: String!
+  datetime: String!
+  location: Location!
+  description: String!
+  food: [String]!
+  attendees: [String]
+  totalServings: Int
+}
+
+type RequestEvent implements Event {
+  id: ID!
+  type: EventType!
+  creator: String!
+  datetime: String!
+  location: Location!
+  allergies: [String]
+}
+
+enum EventType {
+  GIVEAWAY
+  FOODDRIVE
+  REQUEST
+}
