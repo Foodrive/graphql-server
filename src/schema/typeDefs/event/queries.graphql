@@ -1,6 +1,6 @@
 type Query {
-  getAllFoodEvents: [FoodEvent]!
-  getAllRequestEvents: [RequestEvent]!
-  getFoodEvent(id: ID!): FoodEvent!
-  getRequestEvent(id: ID!): RequestEvent!
+  getAllFoodDrives: [FoodDrive]!
+  getAllFoodRequests: [FoodRequest]!
+  getFoodDrive(id: ID!): FoodDrive!
+  getFoodRequest(id: ID!): FoodRequest!
 }

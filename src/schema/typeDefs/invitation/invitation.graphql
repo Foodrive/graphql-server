@@ -1,0 +1,8 @@
+type Invitation {
+  id: ID!,
+  user: User!,
+  event: Event!,
+  code: String!,
+  verified: Boolean!,
+  verificationDateTime: String!
+}

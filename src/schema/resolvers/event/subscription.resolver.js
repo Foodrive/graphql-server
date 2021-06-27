@@ -1,24 +1,24 @@
-const newFoodEvent = () => {
+const newFoodDrive = () => {
   // TODO pubsub
 };
 
-const newRequestEvent = () => {
+const newFoodRequest = () => {
   // TODO pubsub
 };
 
-const foodEventUpdated = () => {
+const foodDriveUpdated = () => {
   // TODO pubsub
 };
 
-const requestEventUpdated = () => {
+const foodRequestUpdated = () => {
   // TODO pubsub
 };
 
 const Subscription = {
-  newFoodEvent,
-  newRequestEvent,
-  foodEventUpdated,
-  requestEventUpdated,
+  newFoodDrive,
+  newFoodRequest,
+  foodDriveUpdated,
+  foodRequestUpdated,
 };
 
 export default {

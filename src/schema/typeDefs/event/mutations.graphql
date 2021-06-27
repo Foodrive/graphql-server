@@ -1,27 +1,26 @@
 type Mutation {
-  createRequestEvent(
+  createFoodRequest(
     creator: String!
     location: String!
     allergies: [String]
-  ): RequestEvent
+  ): FoodRequest
 
-  createFoodEvent(
+  createFoodDrive(
     name: String!
-    type: EventType!
     creator: String!
     datetime: String!
     location: String!
     description: String!
     food: [String]!
-  ): FoodEvent
+  ): Event
 
-  updateRequestEvent(
+  updateFoodRequest(
     id: ID!
     location: String
     allergies: [String]
-  ): RequestEvent
+  ): FoodRequest
 
-  updateFoodEvent(
+  updateFoodDrive(
     id: ID!
     name: String
     creator: String
@@ -29,7 +28,7 @@ type Mutation {
     location: String
     description: String
     food: [String]
-  ): FoodEvent
+  ): FoodDrive
 
   deleteEvent(id: ID!): Event
 }

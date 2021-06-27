@@ -1,0 +1,12 @@
+type User {
+  id: ID!,
+  username: String!,
+  password: String!,
+  firstName: String!,
+  lastName: String!,
+  phoneNumber: String!,
+  invitations: [Invitation!]!
+  eventsAttended: [Event!]!
+  eventsHosted: [Event!]!
+  allergies: [String!]!
+}

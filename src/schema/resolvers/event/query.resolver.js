@@ -1,26 +1,22 @@
-const getAllFoodEvents = () => {
+const getAllFoodDrives = () =>
   // TODO query database
-  return [];
-};
-
-const getAllRequestEvents = () => {
+  [];
+const getAllFoodRequests = () =>
   // TODO query database
-  return [];
-};
-
-const getFoodEvent = () => {
+  [];
+const getFoodDrive = () => {
   // TODO query database
 };
 
-const getRequestEvent = () => {
+const getFoodRequest = () => {
   // TODO query database
 };
 
 const Query = {
-  getAllFoodEvents,
-  getAllRequestEvents,
-  getFoodEvent,
-  getRequestEvent,
+  getAllFoodDrives,
+  getAllFoodRequests,
+  getFoodDrive,
+  getFoodRequest,
 };
 
 export default {

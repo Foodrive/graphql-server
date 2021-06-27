@@ -1,16 +1,16 @@
-const createRequestEvent = () => {
+const createFoodRequest = () => {
   // TODO implement
 };
 
-const createFoodEvent = () => {
+const createFoodDrive = () => {
   // TODO implement
 };
 
-const updateRequestEvent = () => {
+const updateFoodRequest = () => {
   // TODO implement
 };
 
-const updateFoodEvent = () => {
+const updateFoodDrive = () => {
   // TODO implement
 };
 
@@ -19,10 +19,10 @@ const deleteEvent = () => {
 };
 
 const Mutation = {
-  createRequestEvent,
-  createFoodEvent,
-  updateRequestEvent,
-  updateFoodEvent,
+  createFoodRequest,
+  createFoodDrive,
+  updateFoodRequest,
+  updateFoodDrive,
   deleteEvent,
 };
 

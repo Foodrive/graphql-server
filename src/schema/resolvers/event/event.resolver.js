@@ -1,7 +1,7 @@
 export const EventType = {
-  giveaway: "GIVEAWAY",
+  foodDiscount: "FOODDISCOUNT",
   foodDrive: "FOODDRIVE",
-  request: "REQUEST",
+  foodRequest: "FOODREQUEST",
 };
 
 // General event resolver
@@ -14,17 +14,17 @@ const Event = {
   creator,
   __resolveType(event) {
     switch (event.type) {
-      case EventType.giveaway:
-        return EventType.giveaway;
+      case EventType.foodDiscount:
+        return EventType.foodDiscount;
       case EventType.foodDrive:
         return EventType.foodDrive;
       default:
-        return EventType.request;
+        return EventType.foodRequest;
     }
   },
 };
 
-// Food event resolvers
+// Food drive resolvers
 
 const food = (parent) =>
   // TODO search food items in DB using IDs
@@ -38,20 +38,18 @@ const totalServings = (parent) =>
   // TODO add up all servings left in food list
   0;
 
-const FoodEvent = {
+const FoodDrive = {
   food,
   attendees,
   totalServings,
 };
 
-// Request event resolvers
+// Food request resolvers
 
-const RequestEvent = {
-  allergies: (parent) => parent.allergies,
-};
+const FoodRequest = {};
 
 export default {
   Event,
-  FoodEvent,
-  RequestEvent,
+  FoodDrive,
+  FoodRequest,
 };

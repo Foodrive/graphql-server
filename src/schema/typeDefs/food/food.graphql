@@ -1,0 +1,7 @@
+type Food {
+  id: ID!,
+  name: String!,
+  description: String,
+  servings: Int!,
+  allergens: [String!]!
+}
