@@ -1,5 +1,5 @@
 import { makeExecutableSchema } from "apollo-server";
-import typeDefs from "./types";
+import typeDefs from "./typeDefs";
 import resolvers from "./resolvers";
 
 export default makeExecutableSchema({

@@ -1,0 +1,35 @@
+type Mutation {
+  createRequestEvent(
+    creator: String!
+    location: String!
+    allergies: [String]
+  ): RequestEvent
+
+  createFoodEvent(
+    name: String!
+    type: EventType!
+    creator: String!
+    datetime: String!
+    location: String!
+    description: String!
+    food: [String]!
+  ): FoodEvent
+
+  updateRequestEvent(
+    id: ID!
+    location: String
+    allergies: [String]
+  ): RequestEvent
+
+  updateFoodEvent(
+    id: ID!
+    name: String
+    creator: String
+    datetime: String
+    location: String
+    description: String
+    food: [String]
+  ): FoodEvent
+
+  deleteEvent(id: ID!): Event
+}
