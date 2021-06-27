@@ -6,8 +6,8 @@
 const partitions = ["users", "events"];
 
 class CloudantDatabase {
-  constructor(database) {
-    this.database = database;
+  constructor(cloudant) {
+    this.database = cloudant.db;
     partitions.forEach((key) => {
       this[key] = this.createPartition(key);
     });
@@ -16,8 +16,15 @@ class CloudantDatabase {
   createPartition(partitionKey) {
     const partition = {
       async create() {
-      },
+        // console.log(this.database);
+        console.log(this);
 
+        return this.getPartitionedList(partitionKey, {
+          include_docs: true,
+        }).then((result) => {
+          console.log(result);
+        });
+      },
       async update() {
         // implement
       },
@@ -25,15 +32,11 @@ class CloudantDatabase {
         // implement
       },
       async find() {
-        // return this.database
-        //   .partitionedList(partitionKey, { include_docs: true })
-        //   .then((result) => result.rows);
+        return this.database
+          .partitionedList(partitionKey, { include_docs: true })
+          .then((result) => result.rows);
       },
-      async findById() {
-
-      }
     };
-
     // bind the partition to this object so we can access database
     Object.bind(partition, this);
     return partition;
