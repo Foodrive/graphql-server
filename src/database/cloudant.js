@@ -48,7 +48,7 @@ class CloudantDatabase {
                 logger.info(
                   `Database does not exist... creating: ${config.dbName}`
                 );
-                await cloudant.db.create(config.dbName);
+                await cloudant.db.create(config.dbName, { partitioned: true });
               }
               const db = cloudant.use(config.dbName);
               logger.info(
