@@ -1,12 +1,16 @@
 import Cloudant from "@cloudant/cloudant";
 import { cloudant as config } from "../config";
-import logger from "../utils/logger";
+import createLogger from "../utils/logger";
+
+const logger = createLogger({
+  name: "cloudant-logger",
+});
 
 const cloudantConfig = {
   account: config.cloudantId,
   plugins: {
     iamauth: {
-      iamApiKey: config.apiToken,
+      iamApiKey: config.apiKey,
     },
   },
 };

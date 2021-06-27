@@ -1,1 +1,3 @@
-export default {};
+import CloudantDatabase from "./cloudant";
+
+export default CloudantDatabase;
