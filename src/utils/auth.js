@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { tokenSecret } from "../config";
+import { tokenSecret } from "../config/config";
 
 /**
  * Provides an encrypted hash of the value passed
