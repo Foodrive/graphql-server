@@ -3,6 +3,8 @@ import modules from "./modules";
 import plugins from "./plugins";
 import database from "./database";
 
+const pubsub = new PubSub();
+
 // Anything shared between resolvers are put into context
 const server = new ApolloServer({
   plugins,
@@ -10,7 +12,7 @@ const server = new ApolloServer({
   context: ({ req }) => ({
     ...req,
     database,
-    socket: PubSub,
+    pubsub,
   }),
 });
 
