@@ -16,8 +16,8 @@ const cloudantConfig = {
   },
 };
 
-const connectCloudantDatabase = () => { 
-    const cloudantInstance = Cloudant(cloudantConfig, (err, cloudant) => {
+const connectCloudantDatabase = () => {
+  const cloudantInstance = Cloudant(cloudantConfig, (err, cloudant) => {
     if (err) {
       logger.error(
         `Connect failure: ${err.message} for Cloudant ID: ${config.cloudantId}`
@@ -31,6 +31,7 @@ const connectCloudantDatabase = () => {
           logger.info(`Database does not exist... creating: ${config.dbName}`);
           await cloudant.db.create(config.dbName);
         }
+        return cloudant.db;
       } catch (error) {
         logger.error(
           `Connect failure: ${err.message} for Cloudant ID: ${config.cloudantId}`
@@ -42,7 +43,6 @@ const connectCloudantDatabase = () => {
   const db = cloudantInstance.use(config.dbName);
   logger.info(`Connection success! Connected to DB: ${config.dbName}`);
   return db;
-}
-
+};
 
 export default new CloudantDatabase(connectCloudantDatabase());
