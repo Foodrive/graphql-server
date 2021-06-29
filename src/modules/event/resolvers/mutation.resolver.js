@@ -1,11 +1,11 @@
-const createRequestEvent = async (_, args, context) => {
-  const newRequestEvent = {
-    creator: args.creator,
-    location: args.location,
-    allergies: args.allergies
-  };
+const createRequestEvent = async () => {
+  // const newRequestEvent = {
+  //   creator: args.creator,
+  //   location: args.location,
+  //   allergies: args.allergies
+  // };
   // context.database.events.create();
-  return newRequestEvent;
+  // return newRequestEvent;
   // TODO implement
 };
 
