@@ -1,11 +1,23 @@
-const getAllFoodEvents = () => {
+const getAllFoodEvents = () =>  
   // TODO query database
-  return [];
-};
+   []
+;
 
-const getAllRequestEvents = () => {
+const getAllRequestEvents = async(_0,_1,context) => {
   // TODO query database
-  return [];
+  // need to create DTO mappers from db to objects 
+  // const data = await context.database.events.create({
+  //   "creator": "create",
+  //   "location": "location",
+  //   "allergies": "allelrgies"
+  // });
+
+  // // need to create DTO mappers from db to objects 
+  // return data.map(item => ({
+  //   "creator": item.doc.creator,
+  //   "location": item.doc.location,
+  //   "allergies": item.doc.allergies
+  // }));
 };
 
 const getFoodEvent = () => {
