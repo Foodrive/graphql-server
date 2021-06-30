@@ -1,5 +1,9 @@
 type Location {
   address: String
-  latitude: Float!
+  coords: Coordinates!
+}
+
+type Coordinates {
   longitude: Float!
+  latitude: Float!
 }

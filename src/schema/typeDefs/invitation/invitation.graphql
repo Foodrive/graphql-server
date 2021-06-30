@@ -11,7 +11,8 @@ type Invitation {
 enum InvitationStatus {
   PENDING
   ACCEPTED
-  CLAIMED
   REJECTED
+  CLAIMED
+  CANCELLED
   EXPIRED
 }

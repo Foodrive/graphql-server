@@ -24,7 +24,7 @@ type FoodDrive implements Event {
   invitations: [Invitation!]!
   autoAccept: Boolean!
   isOpen: Boolean!
-  food:
+  food: [Food!]!
 }
 
 enum EventType {
