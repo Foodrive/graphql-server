@@ -1,6 +1,0 @@
-type Query {
-  getAllFoodDrives: [FoodDrive]!
-  getAllFoodRequests: [FoodRequest]!
-  getFoodDrive(id: ID!): FoodDrive!
-  getFoodRequest(id: ID!): FoodRequest!
-}

@@ -1,6 +1,0 @@
-type Subscription {
-  newFoodDrive: FoodDrive
-  newFoodRequest: FoodRequest
-  foodDriveUpdated: FoodDrive
-  foodRequestUpdated: FoodRequest
-}
