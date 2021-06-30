@@ -1,34 +1,48 @@
-// Note: This is just a placeholder database
-// Replace with actual database here
+import Cloudant from "@cloudant/cloudant";
+import { cloudant as config } from "../config";
+import createLogger from "../utils/logger";
+import CloudantDatabase from "./cloudant";
 
-class PureJSDatabase {
-  constructor() {
-    this.items = [];
-  }
+const logger = createLogger({
+  name: "cloudant-logger",
+});
 
-  getAll() {
-    return this.items;
-  }
+const cloudantConfig = {
+  account: config.cloudantId,
+  plugins: {
+    iamauth: {
+      iamApiKey: config.apiKey,
+    },
+  },
+};
 
-  get(index) {
-    return this.items[index];
-  }
+const connectCloudantDatabase = () => {
+  const cloudantInstance = Cloudant(cloudantConfig, (err, cloudant) => {
+    if (err) {
+      logger.error(
+        `Connect failure: ${err.message} for Cloudant ID: ${config.cloudantId}`
+      );
+      return err;
+    }
+    (async () => {
+      try {
+        const existingDbs = await cloudant.db.list();
+        if (!existingDbs.includes(config.dbName)) {
+          logger.info(`Database does not exist... creating: ${config.dbName}`);
+          await cloudant.db.create(config.dbName);
+        }
+        return cloudant.db;
+      } catch (error) {
+        logger.error(
+          `Connect failure: ${err.message} for Cloudant ID: ${config.cloudantId}`
+        );
+        return error;
+      }
+    })();
+  });
+  const db = cloudantInstance.use(config.dbName);
+  logger.info(`Connection success! Connected to DB: ${config.dbName}`);
+  return db;
+};
 
-  add(newItem) {
-    this.items.push(newItem);
-    return newItem;
-  }
-
-  edit(index, updatedItem) {
-    const old = this.items[index];
-    const updated = { ...old, updatedItem };
-    this.items[index] = updated;
-    return updated;
-  }
-
-  delete(index) {
-    return this.items.splice(index, 1);
-  }
-}
-
-export default new PureJSDatabase();
+export default new CloudantDatabase(connectCloudantDatabase());

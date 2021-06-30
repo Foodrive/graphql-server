@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     "prettier/prettier": "error",
     "import/prefer-default-export": "off",
+    "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
   },
 };
