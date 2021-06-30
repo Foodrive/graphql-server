@@ -1,35 +1,32 @@
 interface Event {
   id: ID!
+  name: String!
+  description: String
+  startDate: String!
+  endDate: String!
   type: EventType!
-  creator: String!
-  datetime: String!
   location: Location!
+  organiser: User!
 }
 
-type FoodEvent implements Event {
+type FoodDrive implements Event {
   id: ID!
   name: String!
+  description: String
+  startDate: String!
+  endDate: String!
   type: EventType!
-  creator: String!
-  datetime: String!
   location: Location!
-  description: String!
-  food: [String]!
-  attendees: [String]
-  totalServings: Int
-}
-
-type RequestEvent implements Event {
-  id: ID!
-  type: EventType!
-  creator: String!
-  datetime: String!
-  location: Location!
-  allergies: [String]
+  organiser: User!
+  contactNumber: String! 
+  email: String!
+  maxCapacity: Int!
+  invitations: [Invitation!]!
+  autoAccept: Boolean!
+  isOpen: Boolean!
+  food: [Food!]!
 }
 
 enum EventType {
-  GIVEAWAY
   FOODDRIVE
-  REQUEST
 }

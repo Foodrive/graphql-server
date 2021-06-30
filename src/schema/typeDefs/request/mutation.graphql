@@ -1,0 +1,17 @@
+type Mutation {
+  createRequest(
+    requestorId: ID!
+    location: Location!
+    numAttendees: Int!
+    food: [Food!]!
+  ): Request!
+
+  updateRequest(
+    requestId: ID!
+    location: Location
+    numAttendees: Int
+    food: [Food!]
+  ): Request!
+
+  deleteRequest(requestId: ID!): Boolean!
+}

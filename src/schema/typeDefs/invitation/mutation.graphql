@@ -1,0 +1,12 @@
+type Mutation {
+  createInvitation(
+    eventId: ID!
+    userId: ID!
+    numAttendees: Int!
+  ): Invitation
+
+  verifyInvitation(invId: ID): Invitation
+  cancelInvitation(invId: ID): Invitation
+  acceptInvitation(invId: ID): Invitation
+  rejectInvitation(invId: ID): Invitation
+}

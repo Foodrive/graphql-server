@@ -1,0 +1,12 @@
+type Query {
+  getRequestsByRequestor(
+    requestorId: ID!
+    maxRequests: Int
+  ): [Request!]!
+
+  getRequestsByLocation(
+    coords: Coordinates!
+    range: Float!
+    maxRequests: Int
+  ): [Request!]!
+}

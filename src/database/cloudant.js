@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import createLogger from "../utils/logger";
 
 const logger = createLogger({ name: "cloudant-database" });
@@ -25,17 +25,17 @@ class CloudantDatabase {
         return new Promise((resolve, reject) => {
           const id = uuidv4();
           const _id = `${partitionKey}:${id}`;
-          const documentWithId = {...data, _id};
-              database.insert(documentWithId, (err, document) => {
-                if (err) {
-                  logger.error(`Error occurred: ${err.message} create()`);
-                  reject(err);
-                } else {
-                  resolve({ data: document, statusCode: 200 });
-                }
-              });
-            });
-         },
+          const documentWithId = { ...data, _id };
+          database.insert(documentWithId, (err, document) => {
+            if (err) {
+              logger.error(`Error occurred: ${err.message} create()`);
+              reject(err);
+            } else {
+              resolve({ data: document, statusCode: 200 });
+            }
+          });
+        });
+      },
       async update(id, data) {
         return new Promise((resolve, reject) => {
           const _id = `${partitionKey}:${id}`;
@@ -95,12 +95,11 @@ class CloudantDatabase {
               reject(err);
             } else {
               resolve({ data: document, statusCode: 200 });
-
             }
           });
         });
       },
-  }
+    };
     // bind the partition to this object so we can access database
     Object.bind(partition, this);
     return partition;

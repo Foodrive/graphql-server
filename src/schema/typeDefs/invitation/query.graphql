@@ -1,0 +1,4 @@
+type Query {
+  getInvitations(userId: ID!): [Invitation!]!
+  getInvitationById(invId: ID!): Invitation!
+}

@@ -1,0 +1,18 @@
+type Invitation {
+  id: ID!
+  event: Event!
+  attendee: User!
+  numAttendees: Int!
+  code: String!
+  status: InvitationStatus!
+  claimedDate: String!
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CLAIMED
+  CANCELLED
+  EXPIRED
+}

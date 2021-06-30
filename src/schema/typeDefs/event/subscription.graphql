@@ -1,6 +1,5 @@
 type Subscription {
-  newFoodEvent: FoodEvent
-  newRequestEvent: RequestEvent
-  foodEventUpdated: FoodEvent
-  requestEventUpdated: RequestEvent
+  foodDriveCreated: FoodDrive!
+  foodDriveDeleted: FoodDrive!
+  foodDriveUpdated: FoodDrive!
 }
