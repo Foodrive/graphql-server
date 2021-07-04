@@ -1,5 +1,5 @@
 type Subscription {
   foodDriveCreated: FoodDrive!
-  foodDriveDeleted: FoodDrive!
   foodDriveUpdated: FoodDrive!
+  foodDriveDeleted: ID!
 }

@@ -28,5 +28,5 @@ type Mutation {
     food: [FoodInput!]
   ): FoodDrive
 
-  deleteEvent(eventId: ID!): Boolean
+  deleteFoodDrive(id: ID!): Boolean
 }
