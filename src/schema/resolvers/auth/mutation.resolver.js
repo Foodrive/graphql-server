@@ -19,7 +19,7 @@ const signup = async (parent, args, context) => {
     email: "",
     allergies: [],
   };
-  const { data: user } = await context.database.users.create(payload, true);
+  const { data: user } = await context.database.users.create(payload);
 
   const accessToken = createToken({ userId: user.id });
   return {

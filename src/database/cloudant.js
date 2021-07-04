@@ -21,7 +21,7 @@ class CloudantDatabase {
   createPartition(partitionKey, database) {
     // https://www.npmjs.com/package/@cloudant/cloudant - cloudant library with example db operations
     const partition = {
-      async create(data, insertId = false) {
+      async create(data, insertId = true) {
         return new Promise((resolve, reject) => {
           const id = uuidv4();
           const _id = `${partitionKey}:${id}`;
@@ -117,7 +117,7 @@ class CloudantDatabase {
         });
       },
 
-      async getdById(id) {
+      async getById(id) {
         return new Promise((resolve, reject) => {
           const _id = `${partitionKey}:${id}`;
           database.get(_id, (err, document) => {
