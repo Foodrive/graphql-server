@@ -1,5 +1,5 @@
-import { UserInputError } from "apollo-server";
-import { hash, createToken } from "../../../utils/auth";
+import { UserInputError, AuthenticationError } from "apollo-server";
+import { hash, createToken, isValid } from "../../../utils/auth";
 
 const signup = async (parent, args, context) => {
   // validate that all usernames are unique
@@ -21,20 +21,39 @@ const signup = async (parent, args, context) => {
   };
   const { data: user } = await context.database.users.create(payload, true);
 
-  const token = createToken({ userId: user.id });
+  const accessToken = createToken({ userId: user.id });
   return {
-    token,
+    accessToken,
     user,
   };
 };
 
-const login = async () => {};
+const login = async (parent, args, context) => {
+  const { data: users } = await context.database.users.find({
+    username: args.username,
+  });
+  const user = users[0];
 
-const logout = async () => {};
+  if (!user) {
+    throw new AuthenticationError("No such user found.");
+  }
+
+  const valid = await isValid(args.password, user.password);
+
+  if (!valid) {
+    throw new AuthenticationError("Invalid password");
+  }
+
+  const accessToken = createToken({ userId: user.id });
+
+  return {
+    accessToken,
+    user,
+  };
+};
 
 const Mutation = {
   signup,
-  logout,
   login,
 };
 

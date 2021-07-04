@@ -1,3 +1,4 @@
+import { AuthenticationError } from "apollo-server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { tokenSecret } from "../config";
@@ -31,3 +32,28 @@ export const createToken = (payload) =>
  * @returns {Object}
  */
 export const getTokenPayload = (token) => jwt.verify(token, tokenSecret);
+
+/**
+ * Retrieves the userId from the token
+ * @param req
+ * @param authToken
+ * @returns {*}
+ */
+export const getUserId = (req, authToken) => {
+  if (req) {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.replace("Bearer ", "");
+      if (!token) {
+        throw new AuthenticationError("No token found");
+      }
+      const { userId } = getTokenPayload(token);
+      return userId;
+    }
+  } else if (authToken) {
+    const { userId } = getTokenPayload(authToken);
+    return userId;
+  }
+
+  throw new AuthenticationError("Not authenticated");
+};

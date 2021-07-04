@@ -77,6 +77,27 @@ class CloudantDatabase {
           });
         });
       },
+
+      async find(query) {
+        const selector = { ...query };
+        return new Promise((resolve, reject) => {
+          database.partitionedFind(
+            partitionKey,
+            {
+              selector,
+            },
+            (err, document) => {
+              if (err) {
+                logger.error(`Error occurred: ${err.message} getAll()`);
+                reject(err);
+              } else {
+                resolve({ data: document.docs, statusCode: 200 });
+              }
+            }
+          );
+        });
+      },
+
       async getAll() {
         return new Promise((resolve, reject) => {
           database.partitionedFind(
@@ -95,6 +116,7 @@ class CloudantDatabase {
           );
         });
       },
+
       async getdById(id) {
         return new Promise((resolve, reject) => {
           const _id = `${partitionKey}:${id}`;
