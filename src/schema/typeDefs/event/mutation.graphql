@@ -1,16 +1,16 @@
-type Mutation { 
+type Mutation {
   createFoodDrive(
     name: String!
     description: String
     startDate: String!
     endDate: String!
-    location: Location!
-    organiser: User!
+    location: LocationInput!
+    organiserId: ID!
     contactNumber: String!
     email: String!
     maxCapacity: Int!
     autoAccept: Boolean
-    food: [Food!]!
+    food: [FoodInput!]!
   ): FoodDrive
 
   updateFoodDrive(
@@ -19,13 +19,13 @@ type Mutation {
     description: String
     startDate: String
     endDate: String
-    location: Location
+    location: LocationInput
     contactNumber: String
     email: String
     maxCapacity: Int
     autoAccept: Boolean
     isOpen: Boolean
-    food: [Food!]
+    food: [FoodInput!]
   ): FoodDrive
 
   deleteEvent(eventId: ID!): Boolean
