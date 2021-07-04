@@ -21,17 +21,20 @@ class CloudantDatabase {
   createPartition(partitionKey, database) {
     // https://www.npmjs.com/package/@cloudant/cloudant - cloudant library with example db operations
     const partition = {
-      async create(data) {
+      async create(data, insertId = true) {
         return new Promise((resolve, reject) => {
           const id = uuidv4();
           const _id = `${partitionKey}:${id}`;
           const documentWithId = { ...data, _id };
-          database.insert(documentWithId, (err, document) => {
+          if (insertId) {
+            documentWithId.id = id;
+          }
+          database.insert(documentWithId, (err) => {
             if (err) {
               logger.error(`Error occurred: ${err.message} create()`);
               reject(err);
             } else {
-              resolve({ data: document, statusCode: 200 });
+              resolve({ data: documentWithId, statusCode: 200 });
             }
           });
         });
@@ -74,19 +77,47 @@ class CloudantDatabase {
           });
         });
       },
-      async getAll() {
+
+      async find(query) {
+        const selector = { ...query };
         return new Promise((resolve, reject) => {
-          database.partitionedList(partitionKey, (err, document) => {
-            if (err) {
-              logger.error(`Error occurred: ${err.message} getAll()`);
-              reject(err);
-            } else {
-              resolve({ data: document.rows, statusCode: 200 });
+          database.partitionedFind(
+            partitionKey,
+            {
+              selector,
+            },
+            (err, document) => {
+              if (err) {
+                logger.error(`Error occurred: ${err.message} getAll()`);
+                reject(err);
+              } else {
+                resolve({ data: document.docs, statusCode: 200 });
+              }
             }
-          });
+          );
         });
       },
-      async getdById(id) {
+
+      async getAll() {
+        return new Promise((resolve, reject) => {
+          database.partitionedFind(
+            partitionKey,
+            {
+              selector: {},
+            },
+            (err, document) => {
+              if (err) {
+                logger.error(`Error occurred: ${err.message} getAll()`);
+                reject(err);
+              } else {
+                resolve({ data: document.docs, statusCode: 200 });
+              }
+            }
+          );
+        });
+      },
+
+      async getById(id) {
         return new Promise((resolve, reject) => {
           const _id = `${partitionKey}:${id}`;
           database.get(_id, (err, document) => {
