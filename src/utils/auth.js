@@ -36,10 +36,9 @@ export const getTokenPayload = (token) => jwt.verify(token, tokenSecret);
 /**
  * Retrieves the userId from the token
  * @param req
- * @param authToken
  * @returns {*}
  */
-export const getUserId = (req, authToken) => {
+export const getUserId = (req) => {
   if (req) {
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -50,9 +49,6 @@ export const getUserId = (req, authToken) => {
       const { userId } = getTokenPayload(token);
       return userId;
     }
-  } else if (authToken) {
-    const { userId } = getTokenPayload(authToken);
-    return userId;
   }
 
   throw new AuthenticationError("Not authenticated");
