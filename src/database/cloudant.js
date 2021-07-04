@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import createLogger from "../utils/logger";
+import createLogger from "utils/logger";
 
 const logger = createLogger({ name: "cloudant-database" });
 
@@ -8,7 +8,7 @@ const logger = createLogger({ name: "cloudant-database" });
 // https://developer.ibm.com/tutorials/learn-nodejs-node-with-cloudant-dbaas/
 // https://blog.cloudant.com/2019/05/24/Partitioned-Databases-with-Cloudant-Libraries.html
 // https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-database-partitioning
-const partitions = ["users", "events"];
+const partitions = ["users", "events", "invitations"];
 
 class CloudantDatabase {
   constructor(cloudant) {
@@ -31,7 +31,7 @@ class CloudantDatabase {
           }
           database.insert(documentWithId, (err) => {
             if (err) {
-              logger.error(`Error occurred: ${err.message} create()`);
+              logger.error(`Error occurred: '${err.message}' in create()`);
               reject(err);
             } else {
               resolve({ data: documentWithId, statusCode: 200 });
@@ -39,20 +39,37 @@ class CloudantDatabase {
           });
         });
       },
-      async update(id, data) {
+      async update(id, data, merge = true) {
         return new Promise((resolve, reject) => {
           const _id = `${partitionKey}:${id}`;
           database.get(_id, (err, document) => {
             if (err) {
               reject(err);
             } else {
-              const item = { ...document, ...data };
-              database.insert(item, (error, result) => {
+              let item;
+              if (merge) {
+                // Remove all undefined fields. Fields can still be nullable
+                const cleanedData = Object.keys(data).reduce((acc, key) => {
+                  if (data[key] === undefined) {
+                    return acc;
+                  }
+                  return {
+                    ...acc,
+                    [key]: data[key],
+                  };
+                }, {});
+                item = { ...document, ...cleanedData };
+              } else {
+                item = { ...data };
+              }
+              database.insert(item, (error) => {
                 if (error) {
-                  logger.error(`Error occurred: ${error.message} update()`);
+                  logger.error(
+                    `Error occurred: '${error.message}' in update()`
+                  );
                   reject(error);
                 } else {
-                  resolve({ data: result, statusCode: 200 });
+                  resolve({ data: item, statusCode: 200 });
                 }
               });
             }
@@ -66,11 +83,14 @@ class CloudantDatabase {
             if (err) {
               resolve(err.statusCode);
             } else {
-              database.destroy(_id, document._rev, (e) => {
-                if (e) {
-                  reject(e);
+              database.destroy(_id, document._rev, (error, response) => {
+                if (error) {
+                  logger.error(
+                    `Error occurred: '${error.message}' in delete()`
+                  );
+                  reject(error);
                 } else {
-                  resolve(200);
+                  resolve({ data: response.ok, statusCode: 200 });
                 }
               });
             }
@@ -88,7 +108,7 @@ class CloudantDatabase {
             },
             (err, document) => {
               if (err) {
-                logger.error(`Error occurred: ${err.message} getAll()`);
+                logger.error(`Error occurred: '${err.message}' in find()`);
                 reject(err);
               } else {
                 resolve({ data: document.docs, statusCode: 200 });
@@ -117,12 +137,15 @@ class CloudantDatabase {
         });
       },
 
-      async getById(id) {
+      async getById(id, includesPartitionKey = false) {
         return new Promise((resolve, reject) => {
-          const _id = `${partitionKey}:${id}`;
+          let _id = id;
+          if (!includesPartitionKey) {
+            _id = `${partitionKey}:${id}`;
+          }
           database.get(_id, (err, document) => {
             if (err) {
-              logger.error(`Error occurred: ${err.message} getById()`);
+              logger.error(`Error occurred: '${err.message}' in getById()`);
               reject(err);
             } else {
               resolve({ data: document, statusCode: 200 });
