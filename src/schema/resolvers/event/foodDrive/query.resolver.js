@@ -1,6 +1,10 @@
+import { EventType } from "utils/constants";
+
 const Query = {
   getFoodDrives: async (_, __, context) => {
-    const { data } = await context.database.events.find({ type: "FOODDRIVE" });
+    const { data } = await context.database.events.find({
+      type: EventType.foodDrive,
+    });
     return data;
   },
   getFoodDriveById: async (_, args, context) => {

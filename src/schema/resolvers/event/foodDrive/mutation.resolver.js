@@ -1,4 +1,5 @@
 import { eventTriggers } from "utils/pubSubTriggers";
+import { EventType } from "utils/constants";
 
 const createFoodDrive = async (_, args, context) => {
   const newFoodDrive = {
@@ -6,7 +7,7 @@ const createFoodDrive = async (_, args, context) => {
     description: args.description,
     startDate: args.startDate,
     endDate: args.endDate,
-    type: "FOODDRIVE",
+    type: EventType.foodDrive,
     location: args.location,
     organiserId: args.organiserId,
     contactNumber: args.contactNumber,
