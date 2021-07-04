@@ -8,7 +8,7 @@ const logger = createLogger({ name: "cloudant-database" });
 // https://developer.ibm.com/tutorials/learn-nodejs-node-with-cloudant-dbaas/
 // https://blog.cloudant.com/2019/05/24/Partitioned-Databases-with-Cloudant-Libraries.html
 // https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-database-partitioning
-const partitions = ["users", "events"];
+const partitions = ["users", "events", "invitations"];
 
 class CloudantDatabase {
   constructor(cloudant) {
@@ -29,11 +29,11 @@ class CloudantDatabase {
           if (insertId) {
             documentWithId.id = id;
           }
-          database.insert(documentWithId, (err) => {
+          database.insert(documentWithId, (err, result) => {
             if (err) {
               logger.error(`Error occurred: ${err.message} create()`);
               reject(err);
-            } else {
+            } else if (result.ok === true) {
               resolve({ data: documentWithId, statusCode: 200 });
             }
           });
@@ -51,8 +51,8 @@ class CloudantDatabase {
                 if (error) {
                   logger.error(`Error occurred: ${error.message} update()`);
                   reject(error);
-                } else {
-                  resolve({ data: result, statusCode: 200 });
+                } else if (result.ok === true) {
+                  resolve({ data: item, statusCode: 200 });
                 }
               });
             }

@@ -1,3 +1,6 @@
 type Subscription {
-  invitationUpdated(userId: ID!): Invitation
+  createdInvitation(userId: ID!): Invitation
+  acceptedInvitation(userId: ID!): Invitation
+  rejectedInvitation(userId: ID!): Invitation
+  cancelledInvitation(userId: ID!): Invitation
 }
