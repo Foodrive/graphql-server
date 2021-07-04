@@ -1,5 +1,5 @@
-import { fromInvitationDtoToInvitation } from "../../../utils/mapper/invitation";
-import { invitationTriggers } from "../../../utils/pubSubTriggers";
+import { invitationTriggers } from "utils/pubSubTriggers";
+import { fromInvitationDtoToInvitation } from "utils/mapper/invitation";
 
 const createInvitation = async (_, args, context) => {
   // get Event for invitation
