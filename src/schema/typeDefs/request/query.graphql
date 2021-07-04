@@ -5,7 +5,7 @@ type Query {
   ): [Request!]!
 
   getRequestsByLocation(
-    coords: Coordinates!
+    coords: CoordinatesInput!
     range: Float!
     maxRequests: Int
   ): [Request!]!

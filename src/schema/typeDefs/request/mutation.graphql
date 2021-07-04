@@ -1,16 +1,16 @@
 type Mutation {
   createRequest(
     requestorId: ID!
-    location: Location!
+    location: LocationInput!
     numAttendees: Int!
-    food: [Food!]!
+    food: [FoodInput!]!
   ): Request!
 
   updateRequest(
     requestId: ID!
-    location: Location
+    location: LocationInput
     numAttendees: Int
-    food: [Food!]
+    food: [FoodInput!]
   ): Request!
 
   deleteRequest(requestId: ID!): Boolean!

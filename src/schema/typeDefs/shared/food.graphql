@@ -4,3 +4,10 @@ type Food {
   servings: Int!
   allergens: [String!]!
 }
+
+input FoodInput {
+  name: String!
+  description: String
+  servings: Int!
+  allergens: [String!]!
+}
