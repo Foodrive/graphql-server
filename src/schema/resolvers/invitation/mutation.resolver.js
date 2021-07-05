@@ -1,5 +1,5 @@
 import { invitationTriggers } from "utils/pubSubTriggers";
-import { fromInvitationDtoToInvitation } from "utils/mapper/invitation";
+import { InvitationStatus } from "utils/constants";
 
 const createInvitation = async (_, args, context) => {
   // get Event for invitation
@@ -8,12 +8,12 @@ const createInvitation = async (_, args, context) => {
   );
 
   // calculate random 6 digit generated code
-  const validCode = false;
   const { data: invitations } = await context.database.invitations.find({
     eventId: args.eventId,
   });
+
   let randomCode = "";
-  while (!validCode) {
+  while (true) {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const checkExistingCode = invitations.filter(
       (invitation) => invitation.code === code
@@ -24,7 +24,7 @@ const createInvitation = async (_, args, context) => {
     }
   }
 
-  const currentDateTime = new Date().toLocaleString();
+  const currentDateTime = new Date().toISOString();
 
   //  create invitation object
   const invitation = {
@@ -32,7 +32,9 @@ const createInvitation = async (_, args, context) => {
     attendeeId: args.userId,
     code: randomCode,
     numAttendees: args.numAttendees,
-    status: eventData.autoAcccept ? "ACCEPTED" : "PENDING",
+    status: eventData.autoAccept
+      ? InvitationStatus.accepted
+      : InvitationStatus.pending,
     claimedDate: currentDateTime,
   };
 
@@ -41,19 +43,12 @@ const createInvitation = async (_, args, context) => {
     await context.database.invitations.create(invitation);
 
   if (statusCode === 200) {
-    const newInvitation = fromInvitationDtoToInvitation(
-      invitationData,
-      eventData
-    );
-
     context.pubsub.publish(invitationTriggers.createdInvitation, {
-      createdInvitation: newInvitation,
+      createdInvitation: invitationData,
     });
-
-    return newInvitation;
   }
 
-  return null;
+  return invitationData;
 };
 
 const invitationStatusHelper = async (invId, invitationStatus, context) => {
@@ -67,7 +62,7 @@ const invitationStatusHelper = async (invId, invitationStatus, context) => {
 const cancelInvitation = (_, args, context) => {
   const updatedInvitation = invitationStatusHelper(
     args.invId,
-    "CANCELLED",
+    InvitationStatus.cancelled,
     context
   );
 
@@ -81,7 +76,7 @@ const cancelInvitation = (_, args, context) => {
 const acceptInvitation = (_, args, context) => {
   const updatedInvitation = invitationStatusHelper(
     args.invId,
-    "ACCEPTED",
+    InvitationStatus.accepted,
     context
   );
 
@@ -95,7 +90,7 @@ const acceptInvitation = (_, args, context) => {
 const rejectInvitation = (_, args, context) => {
   const updatedInvitation = invitationStatusHelper(
     args.invId,
-    "REJECTED",
+    InvitationStatus.rejected,
     context
   );
 
@@ -107,7 +102,7 @@ const rejectInvitation = (_, args, context) => {
 };
 
 const verifyInvitation = (_, args, context) =>
-  invitationStatusHelper(args.invId, "CLAIMED", context);
+  invitationStatusHelper(args.invId, InvitationStatus.claimed, context);
 
 const Mutation = {
   createInvitation,

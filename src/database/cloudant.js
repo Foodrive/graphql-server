@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import createLogger from "../utils/logger";
+import createLogger from "utils/logger";
 
 const logger = createLogger({ name: "cloudant-database" });
 
@@ -30,29 +30,46 @@ class CloudantDatabase {
             documentWithId.id = id;
           }
           database.insert(documentWithId, (err, result) => {
-            if (err) {
-              logger.error(`Error occurred: ${err.message} create()`);
-              reject(err);
-            } else if (result.ok === true) {
+            if (result.ok) {
               resolve({ data: documentWithId, statusCode: 200 });
+            } else {
+              logger.error(`Error occurred: '${err.message}' in create()`);
+              reject(err);
             }
           });
         });
       },
-      async update(id, data) {
+      async update(id, data, merge = true) {
         return new Promise((resolve, reject) => {
           const _id = `${partitionKey}:${id}`;
           database.get(_id, (err, document) => {
             if (err) {
               reject(err);
             } else {
-              const item = { ...document, ...data };
+              let item;
+              if (merge) {
+                // Remove all undefined fields. Fields can still be nullable
+                const cleanedData = Object.keys(data).reduce((acc, key) => {
+                  if (data[key] === undefined) {
+                    return acc;
+                  }
+                  return {
+                    ...acc,
+                    [key]: data[key],
+                  };
+                }, {});
+                item = { ...document, ...cleanedData };
+              } else {
+                item = { ...data };
+              }
               database.insert(item, (error, result) => {
-                if (error) {
-                  logger.error(`Error occurred: ${error.message} update()`);
-                  reject(error);
-                } else if (result.ok === true) {
+                if (result.ok) {
                   resolve({ data: item, statusCode: 200 });
+                } else {
+                  logger.error(
+                    `Error occurred: '${error.message}' in update()`
+                  );
+                  reject(error);
                 }
               });
             }
@@ -66,11 +83,14 @@ class CloudantDatabase {
             if (err) {
               resolve(err.statusCode);
             } else {
-              database.destroy(_id, document._rev, (e) => {
-                if (e) {
-                  reject(e);
+              database.destroy(_id, document._rev, (error, response) => {
+                if (error) {
+                  logger.error(
+                    `Error occurred: '${error.message}' in delete()`
+                  );
+                  reject(error);
                 } else {
-                  resolve(200);
+                  resolve({ data: response.ok, statusCode: 200 });
                 }
               });
             }
@@ -88,7 +108,7 @@ class CloudantDatabase {
             },
             (err, document) => {
               if (err) {
-                logger.error(`Error occurred: ${err.message} getAll()`);
+                logger.error(`Error occurred: '${err.message}' in find()`);
                 reject(err);
               } else {
                 resolve({ data: document.docs, statusCode: 200 });
@@ -117,12 +137,15 @@ class CloudantDatabase {
         });
       },
 
-      async getById(id) {
+      async getById(id, includesPartitionKey = false) {
         return new Promise((resolve, reject) => {
-          const _id = `${partitionKey}:${id}`;
+          let _id = id;
+          if (!includesPartitionKey) {
+            _id = `${partitionKey}:${id}`;
+          }
           database.get(_id, (err, document) => {
             if (err) {
-              logger.error(`Error occurred: ${err.message} getById()`);
+              logger.error(`Error occurred: '${err.message}' in getById()`);
               reject(err);
             } else {
               resolve({ data: document, statusCode: 200 });

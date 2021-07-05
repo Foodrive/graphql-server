@@ -1,5 +1,3 @@
-import { fromInvitationDtoToInvitation } from "utils/mapper/invitation";
-
 // get all user invitations
 const getInvitations = async (_, args, context) => {
   const { data: allInvitations } = await context.database.invitations.find({
@@ -17,11 +15,7 @@ const getInvitationById = async (_, args, context) => {
 
   invitation.id = invitation._id;
 
-  const { data: event } = await context.database.events.getById(
-    invitation.eventId
-  );
-
-  return fromInvitationDtoToInvitation(invitation, event);
+  return invitation;
 };
 
 const Query = {

@@ -4,3 +4,9 @@ export const invitationTriggers = {
   acceptedInvitation: "acceptedInvitation",
   cancelledInvitation: "cancelledInvitation",
 };
+
+export const eventTriggers = {
+  foodDriveCreated: "foodDriveCreated",
+  foodDriveDeleted: "foodDriveDeleted",
+  foodDriveUpdated: "foodDriveUpdated",
+};
