@@ -1,6 +1,5 @@
 const createRequest = async (_, args, context) => {
   const newRequest = {
-    id: args.id,
     requestor: args.requestor,
     location: args.location,
     numAttendees: args.numAttendees,
@@ -11,8 +10,7 @@ const createRequest = async (_, args, context) => {
 };
 
 const updateRequest = async (_, args, context) => {
-  const updateRequest = {
-    id: args.id,
+  const updatedRequest = {
     requestor: args.requestor,
     location: args.location,
     numAttendees: args.numAttendees,
@@ -20,7 +18,7 @@ const updateRequest = async (_, args, context) => {
   };
   const { data } = await context.database.requests.update(
     args.id,
-    updateRequest
+    updatedRequest
   );
   return data;
 };

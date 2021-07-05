@@ -1,10 +1,8 @@
-import { EventType } from "utils/constants";
-
 const Query = {
   getRequestsByLocation: async (_, args, context) => {
-    const { data } = await context.database.requests.find(
-      args.location
-    );
+    const { data } = await context.database.requests.find({
+      location: args.location,
+    });
     return data;
   },
   getRequestsByRequestor: async (_, args, context) => {
