@@ -8,7 +8,7 @@ const logger = createLogger({ name: "cloudant-database" });
 // https://developer.ibm.com/tutorials/learn-nodejs-node-with-cloudant-dbaas/
 // https://blog.cloudant.com/2019/05/24/Partitioned-Databases-with-Cloudant-Libraries.html
 // https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-database-partitioning
-const partitions = ["users", "events", "invitations"];
+const partitions = ["users", "events", "invitations", "requests"];
 
 class CloudantDatabase {
   constructor(cloudant) {
