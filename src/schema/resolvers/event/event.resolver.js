@@ -1,7 +1,9 @@
+import { EventType } from "utils/constants";
+
 const Event = {
   __resolveType(event) {
-    if (event.type === "FOODDRIVE") {
-      return "FoodDrive";
+    if (event.type === EventType.foodDrive) {
+      return EventType.foodDrive;
     }
     return null;
   },
