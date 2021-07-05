@@ -13,8 +13,6 @@ const getInvitationById = async (_, args, context) => {
     args.invId
   );
 
-  invitation.id = invitation._id;
-
   return invitation;
 };
 
