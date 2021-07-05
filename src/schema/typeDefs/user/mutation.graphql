@@ -7,5 +7,5 @@ type Mutation {
     allergies: [String!]
   ): User!
   
-  deleteUser(username: String!): Boolean!
+  deleteUser(id: ID!): Boolean!
 }
