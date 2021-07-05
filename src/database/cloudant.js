@@ -29,12 +29,12 @@ class CloudantDatabase {
           if (insertId) {
             documentWithId.id = id;
           }
-          database.insert(documentWithId, (err) => {
-            if (err) {
+          database.insert(documentWithId, (err, result) => {
+            if (result.ok) {
+              resolve({ data: documentWithId, statusCode: 200 });
+            } else {
               logger.error(`Error occurred: '${err.message}' in create()`);
               reject(err);
-            } else {
-              resolve({ data: documentWithId, statusCode: 200 });
             }
           });
         });
@@ -62,14 +62,14 @@ class CloudantDatabase {
               } else {
                 item = { ...data };
               }
-              database.insert(item, (error) => {
-                if (error) {
+              database.insert(item, (error, result) => {
+                if (result.ok) {
+                  resolve({ data: item, statusCode: 200 });
+                } else {
                   logger.error(
                     `Error occurred: '${error.message}' in update()`
                   );
                   reject(error);
-                } else {
-                  resolve({ data: item, statusCode: 200 });
                 }
               });
             }
