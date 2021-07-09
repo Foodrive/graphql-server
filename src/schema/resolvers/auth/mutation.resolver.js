@@ -1,5 +1,5 @@
 import { UserInputError, AuthenticationError } from "apollo-server";
-import { hash, createToken, isValid } from "../../../utils/auth";
+import { hash, createToken, isValid } from "utils/auth";
 
 const signup = async (parent, args, context) => {
   // validate that all usernames are unique

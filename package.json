@@ -53,6 +53,7 @@
     "@graphql-tools/schema": "^7.1.5",
     "apollo-log": "^1.0.1",
     "apollo-server": "^2.25.1",
+    "apollo-server-errors": "^2.5.0",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.15",
     "dotenv": "^10.0.0",

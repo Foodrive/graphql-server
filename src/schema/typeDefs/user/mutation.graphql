@@ -1,11 +1,10 @@
 type Mutation {
   updateUser(
-    username: String!
     password: String
     phoneNumber: String
     email: String
     allergies: [String!]
   ): User!
-  
-  deleteUser(username: String!): Boolean!
+
+  deleteUser(id: ID!): Boolean!
 }
