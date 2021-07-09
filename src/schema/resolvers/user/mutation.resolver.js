@@ -7,9 +7,8 @@ const updateUser = async (__, args, context) => {
     throw new AuthenticationError("Not authenticated");
   }
 
-  const password = !args.password ? await hash(args.password) : undefined;
+  const password = args.password ? await hash(args.password) : undefined;
   const { data: result } = await context.database.users.update(context.userId, {
-    username: args.username,
     password,
     phoneNumber: args.phoneNumber,
     email: args.email,
