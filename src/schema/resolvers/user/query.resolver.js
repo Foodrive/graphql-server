@@ -16,7 +16,7 @@ const getUser = async (__, args, context) => {
 
 const Query = {
   getUser,
-}
+};
 
 export default {
   Query,
