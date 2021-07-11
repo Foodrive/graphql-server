@@ -5,6 +5,8 @@ const createRequest = async (_, args, context) => {
     throw new AuthenticationError("Not authenticated.");
   }
 
+  // validate that requestorId exists
+
   const newRequest = {
     requestorId: args.requestorId,
     location: args.location,
