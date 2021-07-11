@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError, ValidationError } from "apollo-server";
 
 const createRequest = async (_, args, context) => {
   if (!context.userId) {
@@ -6,6 +6,13 @@ const createRequest = async (_, args, context) => {
   }
 
   // validate that requestorId exists
+  const { data: users } = await context.database.users.find({
+    id: args.requestorId,
+  });
+
+  if (users.length === 0) {
+    throw new ValidationError("RequestorId does not exist.");
+  }
 
   const newRequest = {
     requestor: args.requestorId,
