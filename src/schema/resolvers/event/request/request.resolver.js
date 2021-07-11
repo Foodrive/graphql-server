@@ -1,5 +1,6 @@
 const requestor = async (parent, _, context) => {
-  const { data } = await context.database.requestor.getById(parent.requestor);
+  const { data } = await context.database.users.getById(parent.requestor);
+
   return data;
 };
 
