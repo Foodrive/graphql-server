@@ -99,13 +99,14 @@ class CloudantDatabase {
         });
       },
 
-      async find(query) {
+      async find(query, options = {}) {
         const selector = { ...query };
         return new Promise((resolve, reject) => {
           database.partitionedFind(
             partitionKey,
             {
               selector,
+              ...options,
             },
             (err, document) => {
               if (err) {
