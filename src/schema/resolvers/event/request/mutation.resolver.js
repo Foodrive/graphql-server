@@ -8,7 +8,7 @@ const createRequest = async (_, args, context) => {
   // validate that requestorId exists
 
   const newRequest = {
-    requestorId: args.requestorId,
+    requestor: args.requestorId,
     location: args.location,
     numAttendees: args.numAttendees,
     food: args.food,
