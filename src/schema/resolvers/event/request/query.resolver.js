@@ -59,7 +59,7 @@ const Query = {
 
     const options = {};
     const query = {
-      requestorId: args.requestorId,
+      requestor: args.requestorId,
     };
 
     if (args.maxRequests) {
