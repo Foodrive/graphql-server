@@ -1,6 +1,6 @@
 applications:
   - name: apollo-server-basic
-    command: npm serve
+    command: npm run serve
     path: .
     memory: 128M
     instances: 1
