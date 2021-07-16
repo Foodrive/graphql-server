@@ -1,0 +1,4 @@
+type Query {
+  getFoodDrives(userId: ID): [FoodDrive!]!
+  getFoodDriveById(eventId: ID!): FoodDrive!
+}

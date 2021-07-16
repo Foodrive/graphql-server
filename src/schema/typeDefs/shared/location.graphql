@@ -1,0 +1,19 @@
+type Location {
+  address: String
+  coords: Coordinates!
+}
+
+type Coordinates {
+  longitude: Float!
+  latitude: Float!
+}
+
+input LocationInput {
+  address: String
+  coords: CoordinatesInput!
+}
+
+input CoordinatesInput {
+  longitude: Float!
+  latitude: Float!
+}

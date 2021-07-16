@@ -4,14 +4,14 @@
   "description": "Basic GraphQL server",
   "main": "./bin/www",
   "engines": {
-    "node": "^16.3.0"
+    "node": "^15.14.0"
   },
   "scripts": {
     "clean": "rm -rf dist",
     "transpile": "babel src -d dist --copy-files",
     "build": "npm run clean && npm run transpile",
     "serve": "npm run build && NODE_ENV=production node dist/bin/www.js",
-    "start": "rm -rf ./node_modules/.cache/babel-loader && NODE_ENV=development nodemon --exec babel-node src/bin/www.js",
+    "start": "rm -rf ./node_modules/.cache/babel-loader && NODE_ENV=development && NODE_PATH=src/ nodemon --exec babel-node src/bin/www.js",
     "prepare": "husky install"
   },
   "repository": {
@@ -47,16 +47,19 @@
     "prettier": "^2.3.1"
   },
   "dependencies": {
+    "@cloudant/cloudant": "^4.4.0",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^6.2.14",
     "@graphql-tools/schema": "^7.1.5",
     "apollo-log": "^1.0.1",
     "apollo-server": "^2.25.1",
+    "apollo-server-errors": "^2.5.0",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.15",
     "dotenv": "^10.0.0",
     "graphql": "^15.5.0",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "uuid": "^8.3.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

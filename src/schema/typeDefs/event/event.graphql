@@ -1,0 +1,32 @@
+interface Event {
+  id: ID!
+  name: String!
+  description: String
+  startDate: String!
+  endDate: String!
+  type: EventType!
+  location: Location!
+  organiser: User!
+}
+
+type FoodDrive implements Event {
+  id: ID!
+  name: String!
+  description: String
+  startDate: String!
+  endDate: String!
+  type: EventType!
+  location: Location!
+  organiser: User!
+  contactNumber: String! 
+  email: String!
+  maxCapacity: Int!
+  invitations: [Invitation!]!
+  autoAccept: Boolean!
+  isOpen: Boolean!
+  food: [Food!]!
+}
+
+enum EventType {
+  FOODDRIVE
+}

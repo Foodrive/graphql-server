@@ -1,0 +1,7 @@
+type Request {
+  id: ID!
+  requestor: User!
+  location: Location!
+  numAttendees: Int!
+  food: [Food!]!
+}

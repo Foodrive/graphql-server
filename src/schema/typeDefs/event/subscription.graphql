@@ -1,0 +1,5 @@
+type Subscription {
+  foodDriveCreated: FoodDrive!
+  foodDriveUpdated: FoodDrive!
+  foodDriveDeleted: ID!
+}

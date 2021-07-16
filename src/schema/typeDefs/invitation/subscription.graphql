@@ -1,0 +1,6 @@
+type Subscription {
+  createdInvitation(userId: ID!): Invitation
+  acceptedInvitation(userId: ID!): Invitation
+  rejectedInvitation(userId: ID!): Invitation
+  cancelledInvitation(userId: ID!): Invitation
+}
