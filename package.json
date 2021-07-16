@@ -4,7 +4,7 @@
   "description": "Basic GraphQL server",
   "main": "./bin/www",
   "engines": {
-    "node": "^16.3.0"
+    "node": "^15.14.0"
   },
   "scripts": {
     "clean": "rm -rf dist",
