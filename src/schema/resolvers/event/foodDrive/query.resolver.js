@@ -1,4 +1,4 @@
-import { EventType } from "utils/constants";
+import { EventType } from "../../../../utils/constants";
 
 const Query = {
   getFoodDrives: async (_, args, context) => {

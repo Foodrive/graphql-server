@@ -1,4 +1,4 @@
-import { makeExecutableSchema } from "apollo-server";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import typeDefs from "./typeDefs";
 import resolvers from "./resolvers";
 

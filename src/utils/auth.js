@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError } from "apollo-server-errors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { tokenSecret } from "../config";
