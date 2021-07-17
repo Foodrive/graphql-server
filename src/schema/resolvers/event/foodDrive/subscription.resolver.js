@@ -1,4 +1,4 @@
-import { eventTriggers } from "utils/pubSubTriggers";
+import { eventTriggers } from "../../../../utils/pubSubTriggers";
 
 const foodDriveCreated = {
   subscribe: (_, __, context) =>

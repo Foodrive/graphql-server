@@ -1,5 +1,5 @@
-import { invitationTriggers } from "utils/pubSubTriggers";
-import { InvitationStatus } from "utils/constants";
+import { invitationTriggers } from "../../../utils/pubSubTriggers";
+import { InvitationStatus } from "../../../utils/constants";
 
 const createInvitation = async (_, args, context) => {
   // get Event for invitation

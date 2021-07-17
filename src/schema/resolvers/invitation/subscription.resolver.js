@@ -1,4 +1,4 @@
-import { invitationTriggers } from "utils/pubSubTriggers";
+import { invitationTriggers } from "../../../utils/pubSubTriggers";
 
 const createdInvitation = {
   subscribe: (_, __, context) =>

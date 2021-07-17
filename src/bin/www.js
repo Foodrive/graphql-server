@@ -1,5 +1,5 @@
 import server from "..";
 
-server.listen().then(({ url }) => {
+server.listen({ port: 8080 }).then(({ url }) => {
   console.log(`Server is running on ${url}`);
 });

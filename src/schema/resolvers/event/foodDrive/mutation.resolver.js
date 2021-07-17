@@ -1,5 +1,5 @@
-import { eventTriggers } from "utils/pubSubTriggers";
-import { EventType } from "utils/constants";
+import { eventTriggers } from "../../../../utils/pubSubTriggers";
+import { EventType } from "../../../../utils/constants";
 
 const createFoodDrive = async (_, args, context) => {
   const newFoodDrive = {

@@ -1,4 +1,4 @@
-import { EventType } from "utils/constants";
+import { EventType } from "../../../utils/constants";
 
 const Event = {
   __resolveType(event) {

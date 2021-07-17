@@ -1,6 +1,6 @@
 import { AuthenticationError } from "apollo-server";
 import { ApolloError } from "apollo-server-errors";
-import { hash } from "utils/auth";
+import { hash } from "../../../utils/auth";
 
 const updateUser = async (__, args, context) => {
   if (!context.userId) {
