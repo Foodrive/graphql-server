@@ -1,4 +1,4 @@
-import { AuthenticationError, ValidationError } from "apollo-server";
+import { AuthenticationError, ValidationError } from "apollo-server-errors";
 
 const createRequest = async (_, args, context) => {
   if (!context.userId) {

@@ -1,3 +1,4 @@
+import pubsub from "../../../utils/pubsub";
 import { invitationTriggers } from "../../../utils/pubSubTriggers";
 import { InvitationStatus } from "../../../utils/constants";
 
@@ -43,7 +44,7 @@ const createInvitation = async (_, args, context) => {
     await context.database.invitations.create(invitation);
 
   if (statusCode === 200) {
-    context.pubsub.publish(invitationTriggers.createdInvitation, {
+    await pubsub.publish(invitationTriggers.createdInvitation, {
       createdInvitation: invitationData,
     });
   }
@@ -59,49 +60,49 @@ const invitationStatusHelper = async (invId, invitationStatus, context) => {
   return updatedInvitation;
 };
 
-const cancelInvitation = (_, args, context) => {
-  const updatedInvitation = invitationStatusHelper(
+const cancelInvitation = async (_, args, context) => {
+  const updatedInvitation = await invitationStatusHelper(
     args.invId,
     InvitationStatus.cancelled,
     context
   );
 
-  context.pubsub.publish(invitationTriggers.cancelledInvitation, {
+  await pubsub.publish(invitationTriggers.cancelledInvitation, {
     cancelledInvitation: updatedInvitation,
   });
 
   return updatedInvitation;
 };
 
-const acceptInvitation = (_, args, context) => {
-  const updatedInvitation = invitationStatusHelper(
+const acceptInvitation = async (_, args, context) => {
+  const updatedInvitation = await invitationStatusHelper(
     args.invId,
     InvitationStatus.accepted,
     context
   );
 
-  context.pubsub.publish(invitationTriggers.acceptedInvitation, {
+  await pubsub.publish(invitationTriggers.acceptedInvitation, {
     acceptedInvitation: updatedInvitation,
   });
 
   return updatedInvitation;
 };
 
-const rejectInvitation = (_, args, context) => {
-  const updatedInvitation = invitationStatusHelper(
+const rejectInvitation = async (_, args, context) => {
+  const updatedInvitation = await invitationStatusHelper(
     args.invId,
     InvitationStatus.rejected,
     context
   );
 
-  context.pubsub.publish(invitationTriggers.rejectedInvitation, {
+  await pubsub.publish(invitationTriggers.rejectedInvitation, {
     rejectedInvitation: updatedInvitation,
   });
 
   return updatedInvitation;
 };
 
-const verifyInvitation = (_, args, context) =>
+const verifyInvitation = async (_, args, context) =>
   invitationStatusHelper(args.invId, InvitationStatus.claimed, context);
 
 const Mutation = {

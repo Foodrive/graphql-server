@@ -1,4 +1,4 @@
-import { UserInputError, AuthenticationError } from "apollo-server";
+import { UserInputError, AuthenticationError } from "apollo-server-errors";
 import { hash, createToken, isValid } from "../../../utils/auth";
 
 const signup = async (parent, args, context) => {

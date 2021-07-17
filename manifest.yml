@@ -1,6 +1,11 @@
 applications:
-  - name: apollo-server-basic
+  - name: foodspot-server
     command: npm run serve
     path: .
-    memory: 128M
+    memory: 256M
     instances: 1
+    env:
+      NODE_ENV: 'production'
+      CLOUDANT_ID: '13beb852-57c5-4d7f-8f7e-6faf45c927d9-bluemix'
+      CLOUDANT_API_KEY: 'uT17Gfo-rwUzGtyiPDNIQLVTVBcpi8UaE5Y8fXBhEtmq'
+      TOKEN_SECRET: 'bOZUdDRKdZBP9yrBe39kjDlVYJ7lWXV6'
