@@ -1,22 +1,21 @@
-import { invitationTriggers } from "utils/pubSubTriggers";
+import pubsub from "../../../utils/pubsub";
+import { invitationTriggers } from "../../../utils/pubSubTriggers";
 
 const createdInvitation = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(invitationTriggers.createdInvitation),
+  subscribe: () => pubsub.asyncIterator([invitationTriggers.createdInvitation]),
 };
 
 const acceptedInvitation = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(invitationTriggers.acceptedInvitation),
+  subscribe: () =>
+    pubsub.asyncIterator([invitationTriggers.acceptedInvitation]),
 };
 const rejectedInvitation = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(invitationTriggers.rejectedInvitation),
+  subscribe: () => pubsub.asyncIterator([invitationTriggers.rejectedInvitation]),
 };
 
 const cancelledInvitation = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(invitationTriggers.cancelledInvitation),
+  subscribe: () =>
+    pubsub.asyncIterator([invitationTriggers.cancelledInvitation]),
 };
 const Subscription = {
   createdInvitation,

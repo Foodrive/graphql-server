@@ -1,18 +1,16 @@
-import { eventTriggers } from "utils/pubSubTriggers";
+import pubsub from "../../../../utils/pubsub";
+import { eventTriggers } from "../../../../utils/pubSubTriggers";
 
 const foodDriveCreated = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(eventTriggers.foodDriveCreated),
+  subscribe: () => pubsub.asyncIterator([eventTriggers.foodDriveCreated]),
 };
 
 const foodDriveDeleted = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(eventTriggers.foodDriveDeleted),
+  subscribe: () => pubsub.asyncIterator([eventTriggers.foodDriveDeleted]),
 };
 
 const foodDriveUpdated = {
-  subscribe: (_, __, context) =>
-    context.pubsub.asyncIterator(eventTriggers.foodDriveUpdated),
+  subscribe: () => pubsub.asyncIterator([eventTriggers.foodDriveUpdated]),
 };
 
 const Subscription = {

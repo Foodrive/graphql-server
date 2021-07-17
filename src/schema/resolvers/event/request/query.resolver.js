@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError } from "apollo-server-errors";
 
 const Query = {
   getRequestsByLocation: async (_, args, context) => {

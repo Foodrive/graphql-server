@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import createLogger from "utils/logger";
+import createLogger from "../utils/logger";
 
 const logger = createLogger({ name: "cloudant-database" });
 
