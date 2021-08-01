@@ -1,7 +1,7 @@
 // get all user invitations
 const getInvitations = async (_, args, context) => {
   const { data: allInvitations } = await context.database.invitations.find({
-    userId: args.userId,
+    attendeeId: args.userId,
   });
 
   return allInvitations;
