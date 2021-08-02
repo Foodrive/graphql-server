@@ -18,7 +18,7 @@ type FoodDrive implements Event {
   type: EventType!
   location: Location!
   organiser: User!
-  contactNumber: String! 
+  contactNumber: String!
   email: String!
   maxCapacity: Int!
   invitations: [Invitation!]!
@@ -28,5 +28,5 @@ type FoodDrive implements Event {
 }
 
 enum EventType {
-  FOODDRIVE
+  FoodDrive
 }

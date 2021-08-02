@@ -1,5 +1,5 @@
 export const EventType = {
-  foodDrive: "FOODDRIVE",
+  foodDrive: "FoodDrive",
 };
 
 export const InvitationStatus = {
