@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
+import * as ngrok from "ngrok";
 import schema from "../schema";
 import server from "..";
 
@@ -37,7 +38,7 @@ const startServer = async () => {
     });
   });
 
-  await new Promise((resolve) => httpServer.listen({ port: 8080 }, resolve));
+  await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
   return `http://localhost:${PORT}${server.graphqlPath}`;
 };
 
@@ -46,3 +47,18 @@ startServer()
     console.log(`Server is now listening on ${url}`);
   })
   .catch(console.log);
+
+if (process.env.NODE_ENV === "development") {
+  ngrok
+    .connect({
+      proto: "http",
+      addr: PORT,
+    })
+    .then((url) => {
+      console.log(`Serving ngrok at: ${url}/graphql`);
+    })
+    .catch((err) => {
+      console.error("Errror while connecting Ngrok", err);
+      return new Error("Ngrok Failed!");
+    });
+}
