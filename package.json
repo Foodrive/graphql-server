@@ -62,6 +62,7 @@
     "husky": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^11.0.0",
+    "ngrok": "^4.1.0",
     "subscriptions-transport-ws": "^0.9.19",
     "uuid": "^8.3.2"
   },
