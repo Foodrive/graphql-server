@@ -1,6 +1,5 @@
 type Mutation {
   updateUser(
-    username: String!
     firstName: String!
     lastName: String!
     password: String

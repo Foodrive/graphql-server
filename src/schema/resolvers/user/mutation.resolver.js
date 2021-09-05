@@ -9,7 +9,6 @@ const updateUser = async (__, args, context) => {
   const password = args.password ? await hash(args.password) : undefined;
   const { data: result } = await context.database.users.update(context.userId, {
     password,
-    username: args.username,
     firstName: args.firstName,
     lastName: args.lastName,
     phoneNumber: args.phoneNumber,
