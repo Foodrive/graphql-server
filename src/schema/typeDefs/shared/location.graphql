@@ -9,8 +9,8 @@ type Coordinates {
 }
 
 input LocationInput {
-  address: String
-  coords: CoordinatesInput!
+  address: String!
+  coords: CoordinatesInput
 }
 
 input CoordinatesInput {
