@@ -1,6 +1,6 @@
 type Location {
-  address: String
-  coords: Coordinates!
+  address: String!
+  coords: Coordinates
 }
 
 type Coordinates {

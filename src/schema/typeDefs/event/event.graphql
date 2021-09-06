@@ -25,6 +25,7 @@ type FoodDrive implements Event {
   autoAccept: Boolean!
   isOpen: Boolean!
   food: [Food!]!
+  facebookPage: String
 }
 
 enum EventType {

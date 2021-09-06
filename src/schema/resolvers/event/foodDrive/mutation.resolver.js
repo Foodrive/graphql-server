@@ -17,6 +17,7 @@ const createFoodDrive = async (_, args, context) => {
     autoAccept: args.autoAccept ?? true,
     isOpen: true,
     food: args.food,
+    facebookPage: args.facebookPage,
   };
   const { data } = await context.database.events.create(newFoodDrive);
   await pubsub.publish(eventTriggers.foodDriveCreated, {
@@ -39,6 +40,7 @@ const updateFoodDrive = async (_, args, context) => {
     autoAccept: args.autoAccept,
     isOpen: args.isOpen,
     food: args.food,
+    facebookPage: args.facebookPage,
   };
   const { data } = await context.database.events.update(
     args.id,
