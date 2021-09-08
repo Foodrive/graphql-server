@@ -1,8 +1,13 @@
+import { AuthenticationError } from "apollo-server-errors";
 import { eventTriggers } from "../../../../utils/pubSubTriggers";
 import { EventType } from "../../../../utils/constants";
 import pubsub from "../../../../utils/pubsub";
 
 const createFoodDrive = async (_, args, context) => {
+  if (!context.userId) {
+    throw new AuthenticationError("Not authenticated");
+  }
+
   const newFoodDrive = {
     name: args.name,
     description: args.description,
@@ -17,6 +22,7 @@ const createFoodDrive = async (_, args, context) => {
     autoAccept: args.autoAccept ?? true,
     isOpen: true,
     food: args.food,
+    facebookPage: args.facebookPage,
   };
   const { data } = await context.database.events.create(newFoodDrive);
   await pubsub.publish(eventTriggers.foodDriveCreated, {
@@ -26,6 +32,10 @@ const createFoodDrive = async (_, args, context) => {
 };
 
 const updateFoodDrive = async (_, args, context) => {
+  if (!context.userId) {
+    throw new AuthenticationError("Not authenticated");
+  }
+
   const updatedFoodDrive = {
     id: args.id,
     name: args.name,
@@ -39,6 +49,7 @@ const updateFoodDrive = async (_, args, context) => {
     autoAccept: args.autoAccept,
     isOpen: args.isOpen,
     food: args.food,
+    facebookPage: args.facebookPage,
   };
   const { data } = await context.database.events.update(
     args.id,
@@ -51,6 +62,10 @@ const updateFoodDrive = async (_, args, context) => {
 };
 
 const deleteFoodDrive = async (_, args, context) => {
+  if (!context.userId) {
+    throw new AuthenticationError("Not authenticated");
+  }
+
   const { data } = await context.database.events.delete(args.id);
   await pubsub.publish(eventTriggers.foodDriveDeleted, {
     foodDriveDeleted: args.id,

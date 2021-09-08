@@ -11,6 +11,7 @@ type Mutation {
     maxCapacity: Int!
     autoAccept: Boolean
     food: [FoodInput!]!
+    facebookPage: String
   ): FoodDrive
 
   updateFoodDrive(
@@ -26,6 +27,7 @@ type Mutation {
     autoAccept: Boolean
     isOpen: Boolean
     food: [FoodInput!]
+    facebookPage: String
   ): FoodDrive
 
   deleteFoodDrive(id: ID!): Boolean
