@@ -1,8 +1,11 @@
 applications:
-  - name: foodspot-server
-    command: npm run serve
-    path: .
-    memory: 256M
+  - name: foodspot-server.dev
+    memory: 128M
     instances: 1
+    docker:
+      image: foodspotgroup/foodspot-server:latest
     env:
       NODE_ENV: 'production'
+      CLOUDANT_ID: '${{ CLOUDANT_ID }}'
+      CLOUDANT_API_KEY: '${{ CLOUDANT_API_KEY }}'
+      TOKEN_SECRET: '${{ TOKEN_SECRET }}'
