@@ -45,6 +45,6 @@ jobs:
       # Print required commands
       - name: Overwrite manifest with secrets
         run: |
-          sed -i 's/{{ CLOUDANT_ID }}/$CLOUDANT_ID/gi' manifest.yml
+          sed -i "s/{{ CLOUDANT_ID }}/${CLOUDANT_ID}/gi" manifest.yml
           cat manifest.yml
 
