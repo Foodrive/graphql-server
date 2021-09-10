@@ -60,14 +60,14 @@ jobs:
 
       - name: Build image with Docker
         run: |
-          echo "${{steps.docker-tag.outputs.docker_tag}}"
-#          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":"${GITHUB_REF##*/}" \
-#            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-#            --build-arg GITHUB_REF="$GITHUB_REF" .
-#          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":latest \
-#            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-#            --build-arg GITHUB_REF="$GITHUB_REF" .
-#          docker images
+          image_tag="${{steps.docker-tag.outputs.docker_tag}}"
+          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":"${image_tag}" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" .
+          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":latest \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" .
+          docker images
 
   # Deploys the new image to IBM cloud foundry
   deploy:
