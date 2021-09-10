@@ -59,7 +59,7 @@ jobs:
           last_sha=${GITHUB_SHA: -5}
           image_tag="${escaped_branch}"-"${last_sha}"
           branch_image="${DOCKER_USER}"/"${IMAGE_NAME}":"${image_tag}"
-          latest_image="${DOCKER_USER}"/"${IMAGE_NAME}":latest"
+          latest_image="${DOCKER_USER}"/"${IMAGE_NAME}":latest
           echo "::set-output name=branch_image::${branch_image}"
           echo "::set-output name=latest_image::${latest_image}"
 
