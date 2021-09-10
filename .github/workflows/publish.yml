@@ -74,7 +74,7 @@ jobs:
         if: ${{ success() }}
         run: |
           image_tag="${{steps.docker-tag.outputs.docker_tag}}"
-          message="Successfully deployed `${IMAGE_NAME}:${image_tag}` to Dockerhub!\n"
+          message="Successfully deployed \`${IMAGE_NAME}:${image_tag}\` to Dockerhub!\n"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
@@ -84,7 +84,7 @@ jobs:
         run: |
           image_tag="${{steps.docker-tag.outputs.docker_tag}}"
           branch_name="${{ steps.branch-name.outputs.current_branch }}"
-          message="Error deploying `${IMAGE_NAME}:${image_tag}` to Dockerhub!\nPlease see the Github actions for `${branch_name}`"
+          message="Error deploying \`${IMAGE_NAME}:${image_tag}\` to Dockerhub!\nPlease see the Github actions for \`${branch_name}\`"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
