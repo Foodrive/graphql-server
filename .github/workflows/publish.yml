@@ -29,6 +29,7 @@ env:
   CLOUDANT_API_KEY: ${{ secrets.CLOUDANT_API_KEY }}
   CLOUDANT_ID: ${{ secrets.CLOUDANT_ID }}
   TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+  DISCORD_PIPELINE_WEBOOK: ${{ secrets.DISCORD_PIPELINE_WEBHOOK }}
 
 jobs:
 
@@ -67,7 +68,15 @@ jobs:
           docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":latest \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
-          docker images
+
+      - name: Send success message to Discord
+        if: ${{ success() }}
+        run: |
+          image_tag="${{steps.docker-tag.outputs.docker_tag}}"
+          message="Successfully deploy ${IMAGE_NAME}:${image_tag} to Dockerhub!\n"
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"Pipeline\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBOOK}
 
   # Deploys the new image to IBM cloud foundry
   deploy:
