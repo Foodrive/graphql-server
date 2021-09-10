@@ -49,12 +49,18 @@ jobs:
         id: branch-name
         uses: tj-actions/branch-names@v4.9
 
-      - name: Build image with Docker
+      - name: Get docker image tag
+        id: docker-tag
         run: |
           branch_name="${{ steps.branch-name.outputs.current_branch }}"
           escaped_branch=$(echo $branch_name | sed -e 's/[^0-9A-Za-z-]/-/g')
           last_sha=${GITHUB_SHA: -5}
-          echo $last_sha
+          docker_tag="${escaped_branch}"-"${last_sha}"
+          echo "::set-output name=docker_tag::${docker_tag}"
+
+      - name: Build image with Docker
+        run: |
+          echo "${{steps.docker-tag.outputs.docker_tag}}"
 #          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":"${GITHUB_REF##*/}" \
 #            --build-arg GITHUB_SHA="$GITHUB_SHA" \
 #            --build-arg GITHUB_REF="$GITHUB_REF" .
