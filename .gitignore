@@ -11,9 +11,5 @@ npm-debug.log
 dist
 build
 
-# Docker
-Dockerfile
-docker-compose.yml
-
 #IDE files
 .idea
