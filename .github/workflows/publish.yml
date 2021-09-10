@@ -74,9 +74,7 @@ jobs:
         run: |
           image_tag="${{steps.docker-tag.outputs.docker_tag}}"
           message="Successfully deploy ${IMAGE_NAME}:${image_tag} to Dockerhub!\n"
-          curl -H "Content-Type: application/json" \
-            -d "{\"username\": \"Pipeline\", \"content\": \"${message}\"}" \
-            ${DISCORD_PIPELINE_WEBOOK}
+          curl -H "Content-Type: application/json" -d "{\"username\": \"Pipeline\", \"content\": \"${message}\"}" ${DISCORD_PIPELINE_WEBOOK}
 
   # Deploys the new image to IBM cloud foundry
   deploy:
