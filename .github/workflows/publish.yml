@@ -75,6 +75,13 @@ jobs:
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
 
+      - name: Push images to docker
+        run: |
+          branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
+          docker push "${branch_image}"
+          docker push "${latest_image}"
+
       - name: Send success message to Discord
         if: ${{ success() }}
         run: |
