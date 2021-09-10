@@ -1,5 +1,5 @@
 applications:
-  - name: foodspot-server.dev
+  - name: foodspot-server
     memory: 128M
     instances: 1
     docker:
