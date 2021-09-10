@@ -52,7 +52,7 @@ jobs:
       - name: Build image with Docker
         run: |
           branch_name="${{ steps.branch-name.outputs.current_branch }}"
-          cat $branch_name | sed -e 's/[^\w-]/-/g'
+          echo $branch_name | sed -e 's/[^\w-]/-/g'
 #          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":"${GITHUB_REF##*/}" \
 #            --build-arg GITHUB_SHA="$GITHUB_SHA" \
 #            --build-arg GITHUB_REF="$GITHUB_REF" .
