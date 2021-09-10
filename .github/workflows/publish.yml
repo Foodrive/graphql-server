@@ -29,6 +29,7 @@ env:
   CLOUDANT_API_KEY: ${{ secrets.CLOUDANT_API_KEY }}
   CLOUDANT_ID: ${{ secrets.CLOUDANT_ID }}
   TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+  DISCORD_BOT: Pipeline
   DISCORD_PIPELINE_WEBHOOK: ${{ secrets.DISCORD_PIPELINE_WEBHOOK }}
 
 jobs:
@@ -73,9 +74,19 @@ jobs:
         if: ${{ success() }}
         run: |
           image_tag="${{steps.docker-tag.outputs.docker_tag}}"
-          message="Successfully deploy ${IMAGE_NAME}:${image_tag} to Dockerhub!\n"
+          message="Successfully deployed `${IMAGE_NAME}:${image_tag}` to Dockerhub!\n"
           curl -H "Content-Type: application/json" \
-            -d "{\"username\": \"Pipeline\", \"content\": \"${message}\"}" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
+
+      - name: Send error message to Discord
+        if: ${{ failure() }}
+        run: |
+          image_tag="${{steps.docker-tag.outputs.docker_tag}}"
+          branch_name="${{ steps.branch-name.outputs.current_branch }}"
+          message="Error deploying `${IMAGE_NAME}:${image_tag}` to Dockerhub!\nPlease see the Github actions for `${branch_name}`"
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
 
   # Deploys the new image to IBM cloud foundry
