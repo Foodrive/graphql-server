@@ -45,9 +45,13 @@ jobs:
       - name: Docker login
         run: echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USER} --password-stdin
 
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v4.9
+
       - name: Build image with Docker
         run: |
-          echo ${GITHUB_REF#refs/heads/}
+          echo "Running on ${{ steps.branch-name.outputs.current_branch }}"
 #          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":"${GITHUB_REF##*/}" \
 #            --build-arg GITHUB_SHA="$GITHUB_SHA" \
 #            --build-arg GITHUB_REF="$GITHUB_REF" .
