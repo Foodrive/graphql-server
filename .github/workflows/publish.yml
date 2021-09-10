@@ -51,30 +51,36 @@ jobs:
         id: branch-name
         uses: tj-actions/branch-names@v4.9
 
-      - name: Get docker image tag
-        id: docker-tag
+      - name: Get docker image tags
+        id: get-tags
         run: |
           branch_name="${{ steps.branch-name.outputs.current_branch }}"
           escaped_branch=$(echo $branch_name | sed -e 's/[^0-9A-Za-z-]/-/g')
           last_sha=${GITHUB_SHA: -5}
-          docker_tag="${escaped_branch}"-"${last_sha}"
-          echo "::set-output name=docker_tag::${docker_tag}"
+          image_tag="${escaped_branch}"-"${last_sha}"
+          branch_image="${DOCKER_USER}"/"${IMAGE_NAME}":"${image_tag}"
+          latest_image="${DOCKER_USER}"/"${IMAGE_NAME}":latest"
+          echo "::set-output name=branch_image::${branch_image}"
+          echo "::set-output name=latest_image::${latest_image}"
 
       - name: Build image with Docker
+        id: build-image
         run: |
-          image_tag="${{steps.docker-tag.outputs.docker_tag}}"
-          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":"${image_tag}" \
+          branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
+          docker build -t "${branch_image}" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
-          docker build -t "${DOCKER_USER}"/"${IMAGE_NAME}":latest \
+          docker build -t "${latest_image}" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
 
       - name: Send success message to Discord
         if: ${{ success() }}
         run: |
-          image_tag="${{steps.docker-tag.outputs.docker_tag}}"
-          message="Successfully deployed \`${IMAGE_NAME}:${image_tag}\` to Dockerhub!\n"
+          branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
+          message="Successfully built and deployed the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
@@ -82,9 +88,10 @@ jobs:
       - name: Send error message to Discord
         if: ${{ failure() }}
         run: |
-          image_tag="${{steps.docker-tag.outputs.docker_tag}}"
+          branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
           branch_name="${{ steps.branch-name.outputs.current_branch }}"
-          message="Error deploying \`${IMAGE_NAME}:${image_tag}\` to Dockerhub!\nPlease see the Github actions for \`${branch_name}\`"
+          message="Error deploying the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
