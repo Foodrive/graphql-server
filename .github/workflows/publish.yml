@@ -123,6 +123,7 @@ jobs:
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
           ibmcloud --version
           ibmcloud config --check-version=false
+          ibmcloud cf install
 
       # Authenticate with IBM Cloud CLI
       - name: Authenticate with IBM Cloud CLI
