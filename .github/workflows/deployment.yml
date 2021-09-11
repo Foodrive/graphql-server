@@ -27,7 +27,7 @@ env:
   CLOUDANT_API_KEY: ${{ secrets.CLOUDANT_API_KEY }}
   CLOUDANT_ID: ${{ secrets.CLOUDANT_ID }}
   TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
-  DISCORD_BOT: Pipeline
+  DISCORD_BOT: Deployment
   DISCORD_PIPELINE_WEBHOOK: ${{ secrets.DISCORD_PIPELINE_WEBHOOK }}
 
 jobs:
