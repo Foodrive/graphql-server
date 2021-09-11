@@ -1,18 +1,17 @@
-# This workflow is for building a docker image for pull requests so that it
-# can be easily tested by other developers
+# This workflow builds a docker container, publishes it in dockerhub, and then deploys a new image into
 #
 # To configure this workflow:
 #
 # 1. Ensure that your repository contains a Dockerfile
 # 2. Setup secrets
-# 3. Update environment variables
 #
 
-name: Build and publish branch image
+name: Build and publish to Dockerhub, then deploy
 
 # Controls when the workflow will run
 on:
-  pull_request:
+  # Triggers when something is pushed to develop
+  push:
     branches: [ develop ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -28,7 +27,7 @@ env:
   CLOUDANT_API_KEY: ${{ secrets.CLOUDANT_API_KEY }}
   CLOUDANT_ID: ${{ secrets.CLOUDANT_ID }}
   TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
-  DISCORD_BOT: Builder
+  DISCORD_BOT: Pipeline
   DISCORD_PIPELINE_WEBHOOK: ${{ secrets.DISCORD_PIPELINE_WEBHOOK }}
 
 jobs:
@@ -61,14 +60,21 @@ jobs:
           last_sha=${GITHUB_SHA: -5}
           image_tag="${escaped_branch}"-"${last_sha}"
           branch_image="${DOCKER_USER}"/"${IMAGE_NAME}":"${image_tag}"
+          latest_image="${DOCKER_USER}"/"${IMAGE_NAME}":latest
           echo "::set-output name=branch_image::${branch_image}"
+          echo "::set-output name=latest_image::${latest_image}"
 
       # Build both the branch and latest images
       - name: Build image with Docker
         id: build-image
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
           docker build -t "${branch_image}" \
+            -f Dockerfile.prod \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" .
+          docker build -t "${latest_image}" \
             -f Dockerfile.prod \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
@@ -77,13 +83,16 @@ jobs:
       - name: Push images to docker
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
           docker push "${branch_image}"
+          docker push "${latest_image}"
 
       # Send success message to our discord server
       - name: Send success message to Discord
         if: ${{ success() }}
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
+          latest_image="${{steps.get-tags.outputs.latest_image}}"
           message="Successfully built and deployed the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`\n"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
@@ -96,6 +105,66 @@ jobs:
           branch_image="${{steps.get-tags.outputs.branch_image}}"
           latest_image="${{steps.get-tags.outputs.latest_image}}"
           message="Error deploying the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`\n"
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
+
+  # Deploys the new image to IBM cloud foundry
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      # Checkout the branch
+      - uses: actions/checkout@v2
+
+      # Install IBM Cloud and Login
+      - name: Install IBM Cloud CLI
+        run: |
+          curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+          ibmcloud --version
+          ibmcloud config --check-version=false
+          ibmcloud cf install
+
+      # Authenticate with IBM Cloud CLI
+      - name: Authenticate with IBM Cloud CLI
+        run: |
+          ibmcloud login --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}"
+          ibmcloud target --cf
+
+      # Injecting the secrets to the manifest.yml
+      - name: Overwrite manifest with secrets
+        run: |
+          sed -i "s/{{ CLOUDANT_ID }}/${CLOUDANT_ID}/gi" manifest.yml
+          sed -i "s/{{ CLOUDANT_API_KEY }}/${CLOUDANT_API_KEY}/gi" manifest.yml
+          sed -i "s/{{ TOKEN_SECRET }}/${TOKEN_SECRET}/gi" manifest.yml
+          cat manifest.yml
+
+      # Send warning message to discord
+      - name: Send success message to Discord
+        run: |
+          message="\nWARNING: The server is being redeployed! Expect some downtime.\n"
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
+
+      # Deploy the server to cloud foundry
+      - name: Deploy to Cloud Foundry
+        run: ibmcloud app push
+
+      # Send success message to our discord server
+      - name: Send success message to Discord
+        if: ${{ success() }}
+        run: |
+          message="\nSuccessfully deployed the server. Thank you for your patience.\n"
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
+
+      # Send error message to our discord server
+      - name: Send error message to Discord
+        if: ${{ failure() }}
+        run: |
+          message="\nError deploying the server! Please go check it out at https://cloud.ibm.com/login\n"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
