@@ -104,7 +104,6 @@ jobs:
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
           latest_image="${{steps.get-tags.outputs.latest_image}}"
-          branch_name="${{ steps.branch-name.outputs.current_branch }}"
           message="Error deploying the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
@@ -139,3 +138,32 @@ jobs:
           sed -i "s/{{ TOKEN_SECRET }}/${TOKEN_SECRET}/gi" manifest.yml
           cat manifest.yml
 
+      # Send warning message to discord
+      - name: Send success message to Discord
+        run: |
+          message="WARNING: The server is being redeployed! Expect some downtime."
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
+
+      # Deploy the server to cloud foundry
+      - name: Deploy to Cloud Foundry
+        run: ibmcloud app push
+
+      # Send success message to our discord server
+      - name: Send success message to Discord
+        if: ${{ success() }}
+        run: |
+          message="Successfully deployed the server. Thank you for your patience."
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
+
+      # Send error message to our discord server
+      - name: Send error message to Discord
+        if: ${{ failure() }}
+        run: |
+          message="Error deploying the server! Please go check it out at https://cloud.ibm.com/login"
+          curl -H "Content-Type: application/json" \
+            -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
+            ${DISCORD_PIPELINE_WEBHOOK}
