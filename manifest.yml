@@ -6,6 +6,6 @@ applications:
       image: foodspotgroup/foodspot-server:latest
     env:
       NODE_ENV: 'production'
-      CLOUDANT_ID: '$CLOUDANT_ID'
-      CLOUDANT_API_KEY: '$CLOUDANT_API_KEY'
-      TOKEN_SECRET: '$TOKEN_SECRET'
+      CLOUDANT_ID: '{{ CLOUDANT_ID }}'
+      CLOUDANT_API_KEY: '{{ CLOUDANT_API_KEY }}'
+      TOKEN_SECRET: '{{ TOKEN_SECRET }}'
