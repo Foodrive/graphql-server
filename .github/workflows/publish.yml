@@ -44,13 +44,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      # Log intoo docker so that we can push to registry
       - name: Docker login
         run: echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USER} --password-stdin
 
+      # Retrieve the branch name
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v4.9
 
+      # Retrieve the image tags
       - name: Get docker image tags
         id: get-tags
         run: |
@@ -63,6 +66,7 @@ jobs:
           echo "::set-output name=branch_image::${branch_image}"
           echo "::set-output name=latest_image::${latest_image}"
 
+      # Build both the branch and latest images
       - name: Build image with Docker
         id: build-image
         run: |
@@ -75,6 +79,7 @@ jobs:
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
 
+      # Push the images to docker hub
       - name: Push images to docker
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
@@ -82,6 +87,7 @@ jobs:
           docker push "${branch_image}"
           docker push "${latest_image}"
 
+      # Send success message to our discord server
       - name: Send success message to Discord
         if: ${{ success() }}
         run: |
@@ -92,6 +98,7 @@ jobs:
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
 
+      # Send error message to our discord server
       - name: Send error message to Discord
         if: ${{ failure() }}
         run: |
@@ -110,7 +117,20 @@ jobs:
     steps:
       # Checkout the branch
       - uses: actions/checkout@v2
+
       # Install IBM Cloud and Login
+      - name: Install IBM Cloud CLI
+        run: |
+          curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+          ibmcloud --version
+          ibmcloud config --check-version=false
+
+      # Authenticate with IBM Cloud CLI
+      - name: Authenticate with IBM Cloud CLI
+        run |
+          ibmcloud login --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}"
+          ibmcloud target --cf
+
       # Injecting the secrets to the manifest.yml
       - name: Overwrite manifest with secrets
         run: |
