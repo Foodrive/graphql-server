@@ -73,9 +73,11 @@ jobs:
           branch_image="${{steps.get-tags.outputs.branch_image}}"
           latest_image="${{steps.get-tags.outputs.latest_image}}"
           docker build -t "${branch_image}" \
+            -f Dockerfile.prod \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
           docker build -t "${latest_image}" \
+            -f Dockerfile.prod \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" .
 
