@@ -84,7 +84,7 @@ jobs:
         if: ${{ success() }}
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
-          message="Successfully built and deployed the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`\n"
+          message="Successfully built and deployed the following to Dockerhub:\n- \`${branch_image}\`\n"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
@@ -95,7 +95,7 @@ jobs:
         run: |
           branch_image="${{steps.get-tags.outputs.branch_image}}"
           latest_image="${{steps.get-tags.outputs.latest_image}}"
-          message="Error deploying the following to Dockerhub:\n- \`${branch_image}\`\n- \`${latest_image}\`\n"
+          message="Error deploying the following to Dockerhub:\n- \`${branch_image}\`\n"
           curl -H "Content-Type: application/json" \
             -d "{\"username\": \"${DISCORD_BOT}\", \"content\": \"${message}\"}" \
             ${DISCORD_PIPELINE_WEBHOOK}
