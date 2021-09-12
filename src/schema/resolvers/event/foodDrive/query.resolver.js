@@ -15,8 +15,6 @@ const Query = {
 
   getFoodDriveById: async (_, args, context) => {
     const { data } = await context.database.events.getById(args.eventId);
-    // Sort from earliest to latest
-    data.sort((a, b) => b.startDate.localeCompare(a.startDate));
     return data;
   },
 };
