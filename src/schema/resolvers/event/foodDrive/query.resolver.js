@@ -1,15 +1,22 @@
+import dayjs from "dayjs";
 import { EventType } from "../../../../utils/constants";
 
 const Query = {
   getFoodDrives: async (_, args, context) => {
-    const query = { type: EventType.foodDrive };
+    const now = dayjs().unix();
+    const query = { type: EventType.foodDrive, startDate: { $gte: now } };
+
     if (args.userId) {
       query.organiserId = args.userId;
     }
 
+    // Filters
+    if (args.filter?.showAll) {
+      delete query.startDate;
+    }
+
     const { data } = await context.database.events.find(query);
-    // Sort from earliest to latest
-    data.sort((a, b) => b.startDate.localeCompare(a.startDate));
+    data.sort((a, b) => a.startDate - b.startDate);
     return data;
   },
 

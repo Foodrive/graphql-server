@@ -1,4 +1,5 @@
 import { AuthenticationError } from "apollo-server-errors";
+import dayjs from "dayjs";
 import pubsub from "../../../utils/pubsub";
 import { invitationTriggers } from "../../../utils/pubSubTriggers";
 import { InvitationStatus } from "../../../utils/constants";
@@ -30,7 +31,7 @@ const createInvitation = async (_, args, context) => {
     }
   }
 
-  const currentDateTime = new Date().toISOString();
+  const currentDateTime = dayjs().unix();
 
   //  create invitation object
   const invitation = {
