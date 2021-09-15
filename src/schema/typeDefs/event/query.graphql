@@ -1,4 +1,8 @@
+input QueryFilter {
+  showAll: Boolean
+}
+
 type Query {
-  getFoodDrives(userId: ID): [FoodDrive!]!
+  getFoodDrives(userId: ID, filter: QueryFilter): [FoodDrive!]!
   getFoodDriveById(eventId: ID!): FoodDrive!
 }

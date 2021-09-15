@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { AuthenticationError } from "apollo-server-errors";
 import { eventTriggers } from "../../../../utils/pubSubTriggers";
 import { EventType } from "../../../../utils/constants";
@@ -8,11 +9,15 @@ const createFoodDrive = async (_, args, context) => {
     throw new AuthenticationError("Not authenticated");
   }
 
+  // Convert dates to unix so that it's easier to query and filter
+  const startDate = dayjs(args.startDate).unix();
+  const endDate = dayjs(args.endDate).unix();
+
   const newFoodDrive = {
     name: args.name,
     description: args.description,
-    startDate: args.startDate,
-    endDate: args.endDate,
+    startDate,
+    endDate,
     type: EventType.foodDrive,
     location: args.location,
     organiserId: args.organiserId,
@@ -36,12 +41,17 @@ const updateFoodDrive = async (_, args, context) => {
     throw new AuthenticationError("Not authenticated");
   }
 
+  // We do this so that it's easier to
+  // compare using couchDB queries when filtering by date
+  const startDate = dayjs(args.startDate).unix();
+  const endDate = dayjs(args.endDate).unix();
+
   const updatedFoodDrive = {
     id: args.id,
     name: args.name,
     description: args.description,
-    startDate: args.startDate,
-    endDate: args.endDate,
+    startDate,
+    endDate,
     location: args.location,
     contactNumber: args.contactNumber,
     email: args.email,
