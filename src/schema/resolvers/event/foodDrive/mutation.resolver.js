@@ -1,8 +1,8 @@
+import dayjs from "dayjs";
 import { AuthenticationError } from "apollo-server-errors";
 import { eventTriggers } from "../../../../utils/pubSubTriggers";
 import { EventType } from "../../../../utils/constants";
 import pubsub from "../../../../utils/pubsub";
-import dayjs from "dayjs";
 
 const createFoodDrive = async (_, args, context) => {
   if (!context.userId) {
