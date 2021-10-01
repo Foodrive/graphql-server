@@ -4,7 +4,7 @@ import { EventType } from "../../../../utils/constants";
 const Query = {
   getFoodDrives: async (_, args, context) => {
     const now = dayjs().unix();
-    const query = { type: EventType.foodDrive, startDate: { $gte: now } };
+    const query = { type: EventType.foodDrive, endDate: { $gte: now } };
 
     if (args.userId) {
       query.organiserId = args.userId;
@@ -12,7 +12,7 @@ const Query = {
 
     // Filters
     if (args.filter?.showAll) {
-      delete query.startDate;
+      delete query.endDate;
     }
 
     const { data } = await context.database.events.find(query);
