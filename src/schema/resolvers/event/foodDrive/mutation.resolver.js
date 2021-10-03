@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { AuthenticationError } from "apollo-server-errors";
 import { eventTriggers } from "../../../../utils/pubSubTriggers";
-import { EventType } from "../../../../utils/constants";
+import { EventType, InvitationStatus } from "../../../../utils/constants";
 import pubsub from "../../../../utils/pubsub";
 
 const createFoodDrive = async (_, args, context) => {
@@ -75,6 +75,21 @@ const deleteFoodDrive = async (_, args, context) => {
   if (!context.userId) {
     throw new AuthenticationError("Not authenticated");
   }
+
+  const { data: eventInvitations } = await context.database.invitations.find({
+    eventId: args.id,
+    $or: [
+      { status: InvitationStatus.pending },
+      { status: InvitationStatus.accepted },
+    ],
+  });
+  const cancelInvitations = eventInvitations.map(async (inv) =>
+    context.database.invitations.update(inv.id, {
+      status: InvitationStatus.cancelled,
+    })
+  );
+  // @todo optimise the cancelled invitation step with bulk update operation
+  await Promise.all(cancelInvitations);
 
   const { data } = await context.database.events.delete(args.id);
   await pubsub.publish(eventTriggers.foodDriveDeleted, {
