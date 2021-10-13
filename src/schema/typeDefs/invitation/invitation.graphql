@@ -2,6 +2,7 @@ type Invitation {
   id: ID!
   event: Event!
   attendeeId: ID!
+  attendee: User!
   numAttendees: Int!
   code: String!
   status: InvitationStatus!
