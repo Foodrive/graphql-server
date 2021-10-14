@@ -1,4 +1,8 @@
 type Query {
-  getInvitations(userId: ID, eventId: ID): [Invitation!]!
+  getInvitations(
+    userId: ID
+    eventId: ID
+    statusFilter: [InvitationStatus]
+  ): [Invitation!]!
   getInvitationById(invId: ID!): Invitation!
 }

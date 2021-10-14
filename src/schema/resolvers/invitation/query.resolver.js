@@ -2,11 +2,24 @@
 import { InvitationStatus } from "../../../utils/constants";
 
 const getInvitations = async (_, args, context) => {
-  const { data: allInvitations } = await context.database.invitations.find({
+  const query = {
     attendeeId: args.userId,
     eventId: args.eventId,
     $nor: [{ status: InvitationStatus.cancelled }],
-  });
+  };
+
+  if (args.statusFilter) {
+    if (args.statusFilter.includes(InvitationStatus.cancelled)) {
+      delete query.$nor;
+    }
+    query.$or = args.statusFilter.map((status) => ({
+      status,
+    }));
+  }
+
+  const { data: allInvitations } = await context.database.invitations.find(
+    query
+  );
 
   return allInvitations;
 };
