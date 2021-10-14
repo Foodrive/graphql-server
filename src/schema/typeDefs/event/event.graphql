@@ -9,6 +9,13 @@ interface Event {
   organiser: User!
 }
 
+type AttendeeInfo {
+  pendingInvites: Int!
+  claimedCapacity: Int!
+  pendingCapacity: Int!
+  maxCapacity: Int!
+}
+
 type FoodDrive implements Event {
   id: ID!
   name: String!
@@ -26,6 +33,7 @@ type FoodDrive implements Event {
   isOpen: Boolean!
   food: [Food!]!
   facebookPage: String
+  attendeeInfo: AttendeeInfo!
 }
 
 enum EventType {
