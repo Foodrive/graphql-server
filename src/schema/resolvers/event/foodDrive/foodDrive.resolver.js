@@ -20,18 +20,21 @@ const attendeeInfo = async (parent, _, context) => {
   const claimedStatus = [InvitationStatus.claimed, InvitationStatus.accepted];
   const { maxCapacity, id: eventId } = parent;
   const invites = await getInvitationsByEvent(eventId, context.database);
-  let pending = 0;
-  let claimed = 0;
+  let pendingInvites = 0;
+  let pendingCapacity = 0;
+  let claimedCapacity = 0;
   for (const inv of invites) {
     if (inv.status === InvitationStatus.pending) {
-      pending += 1;
+      pendingInvites += 1;
+      pendingCapacity += inv.numAttendees;
     } else if (claimedStatus.includes(inv.status)) {
-      claimed += inv.numAttendees;
+      claimedCapacity += inv.numAttendees;
     }
   }
   return {
-    claimed,
-    pending,
+    pendingInvites,
+    pendingCapacity,
+    claimedCapacity,
     maxCapacity,
   };
 };

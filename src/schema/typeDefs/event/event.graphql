@@ -10,8 +10,9 @@ interface Event {
 }
 
 type AttendeeInfo {
-  pending: Int!
-  claimed: Int!
+  pendingInvites: Int!
+  claimedCapacity: Int!
+  pendingCapacity: Int!
   maxCapacity: Int!
 }
 
