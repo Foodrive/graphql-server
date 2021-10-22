@@ -4,6 +4,28 @@ import pubsub from "../../../utils/pubsub";
 import { invitationTriggers } from "../../../utils/pubSubTriggers";
 import { InvitationStatus } from "../../../utils/constants";
 
+const invitationStatusHelper = async (invId, invitationStatus, context) => {
+  const { data: updatedInvitation } = await context.database.invitations.update(
+    invId,
+    { status: invitationStatus }
+  );
+  return updatedInvitation;
+};
+
+const acceptInvitation = async (invId, context) => {
+  const updatedInvitation = await invitationStatusHelper(
+    invId,
+    InvitationStatus.accepted,
+    context
+  );
+
+  await pubsub.publish(invitationTriggers.acceptedInvitation, {
+    acceptedInvitation: updatedInvitation,
+  });
+
+  return updatedInvitation;
+};
+
 const createInvitation = async (_, args, context) => {
   if (!context.userId) {
     throw new AuthenticationError("Not authenticated");
@@ -58,14 +80,6 @@ const createInvitation = async (_, args, context) => {
   return invitationData;
 };
 
-const invitationStatusHelper = async (invId, invitationStatus, context) => {
-  const { data: updatedInvitation } = await context.database.invitations.update(
-    invId,
-    { status: invitationStatus }
-  );
-  return updatedInvitation;
-};
-
 const cancelInvitation = async (_, args, context) => {
   if (!context.userId) {
     throw new AuthenticationError("Not authenticated");
@@ -84,22 +98,24 @@ const cancelInvitation = async (_, args, context) => {
   return updatedInvitation;
 };
 
-const acceptInvitation = async (_, args, context) => {
+const acceptInvitationList = async (_, args, context) => {
   if (!context.userId) {
     throw new AuthenticationError("Not authenticated");
   }
 
-  const updatedInvitation = await invitationStatusHelper(
-    args.invId,
-    InvitationStatus.accepted,
-    context
+  if (!args.invites || args.invites.length < 0) {
+    return [];
+  }
+
+  const updateRequests = args.invites.map((invId) =>
+    acceptInvitation(invId, context)
   );
 
-  await pubsub.publish(invitationTriggers.acceptedInvitation, {
-    acceptedInvitation: updatedInvitation,
-  });
+  const updateResponses = await Promise.allSettled(updateRequests);
 
-  return updatedInvitation;
+  return updateResponses
+    .filter((res) => res.status === "fulfilled")
+    .map((res) => res.value);
 };
 
 const rejectInvitation = async (_, args, context) => {
@@ -132,7 +148,7 @@ const Mutation = {
   createInvitation,
   verifyInvitation,
   cancelInvitation,
-  acceptInvitation,
+  acceptInvitationList,
   rejectInvitation,
 };
 
